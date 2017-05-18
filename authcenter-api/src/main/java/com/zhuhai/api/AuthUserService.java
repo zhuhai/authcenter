@@ -1,5 +1,7 @@
 package com.zhuhai.api;
 
+import com.zhuhai.entity.AuthUser;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhuhai
@@ -7,4 +9,5 @@ package com.zhuhai.api;
  * Time: 18:29
  */
 public interface AuthUserService {
+    void createAuthUser(AuthUser authUser);
 }

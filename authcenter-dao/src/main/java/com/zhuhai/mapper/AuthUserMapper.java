@@ -1,5 +1,7 @@
 package com.zhuhai.mapper;
 
+import com.zhuhai.entity.AuthUser;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhuhai
@@ -7,4 +9,5 @@ package com.zhuhai.mapper;
  * Time: 18:25
  */
 public interface AuthUserMapper {
+    void insertAuthUser(AuthUser authUser);
 }

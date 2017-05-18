@@ -2,6 +2,15 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
+
+<mapper namespace="com.zhuhai.mapper.AuthUserMapper">
+
+    <insert id="insertAuthUser" parameterType="AuthUser" useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO auth_user(id,username,password,salt,email,phone,sex,avatar,realname,status)
+      VALUES (#{id},#{userName},#{password},#{salt},#{email},#{phone},#{sex},#{avatar},#{realName},#{status})
+    </insert>
+
+
+
 
 </mapper>
