@@ -1,19 +1,41 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : MySQL
-Source Server Version : 50705
+Source Server         : localhost
+Source Server Version : 50611
 Source Host           : localhost:3306
 Source Database       : authcenter
 
 Target Server Type    : MYSQL
-Target Server Version : 50705
+Target Server Version : 50611
 File Encoding         : 65001
 
-Date: 2017-05-17 23:11:28
+Date: 2017-05-18 18:18:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for auth_log
+-- ----------------------------
+DROP TABLE IF EXISTS `auth_log`;
+CREATE TABLE `auth_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) DEFAULT NULL COMMENT '操作人',
+  `start_time` timestamp NULL DEFAULT NULL COMMENT '操作时间',
+  `send_time` int(11) DEFAULT NULL COMMENT '消耗时间',
+  `url` varchar(100) DEFAULT NULL COMMENT '请求路径',
+  `ip` varchar(30) DEFAULT NULL COMMENT 'ip地址',
+  `method` varchar(10) DEFAULT NULL COMMENT '请求类型',
+  `parameter` text COMMENT '请求参数',
+  `user_agent` varchar(100) DEFAULT NULL COMMENT '用户标识',
+  `result` text COMMENT '请求结果',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of auth_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for auth_organization
@@ -119,6 +141,19 @@ CREATE TABLE `auth_user` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for auth_user_organization
+-- ----------------------------
+DROP TABLE IF EXISTS `auth_user_organization`;
+CREATE TABLE `auth_user_organization` (
+  `user_id` int(11) NOT NULL,
+  `organization_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of auth_user_organization
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for auth_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `auth_user_role`;
@@ -143,3 +178,4 @@ CREATE TABLE `user_role_permission` (
 -- ----------------------------
 -- Records of user_role_permission
 -- ----------------------------
+SET FOREIGN_KEY_CHECKS=1;
