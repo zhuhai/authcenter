@@ -10,6 +10,9 @@
       VALUES (#{id},#{userName},#{password},#{salt},#{email},#{phone},#{sex},#{avatar},#{realName},#{status})
     </insert>
 
+    <update id="updateAuthUser" parameterType="AuthUser">
+        UPDATE auth_user set username = #{userName},password = #{password} where id = #{id}
+    </update>
 
 
 

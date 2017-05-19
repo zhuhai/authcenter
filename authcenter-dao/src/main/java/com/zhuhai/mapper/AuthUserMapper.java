@@ -10,4 +10,5 @@ import com.zhuhai.entity.AuthUser;
  */
 public interface AuthUserMapper {
     void insertAuthUser(AuthUser authUser);
+    void updateAuthUser(AuthUser authUser);
 }

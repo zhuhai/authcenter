@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50611
 File Encoding         : 65001
 
-Date: 2017-05-18 18:18:07
+Date: 2017-05-19 18:12:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `auth_log`;
 CREATE TABLE `auth_log` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(45) DEFAULT NULL COMMENT '操作人',
-  `start_time` timestamp NULL DEFAULT NULL COMMENT '操作时间',
+  `start_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
   `send_time` int(11) DEFAULT NULL COMMENT '消耗时间',
   `url` varchar(100) DEFAULT NULL COMMENT '请求路径',
   `ip` varchar(30) DEFAULT NULL COMMENT 'ip地址',
@@ -47,7 +47,7 @@ CREATE TABLE `auth_organization` (
   `description` varchar(500) DEFAULT NULL COMMENT '部门描述',
   `pid` int(11) DEFAULT NULL COMMENT '上级部门',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `create_time` timestamp NULL DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -70,8 +70,8 @@ CREATE TABLE `auth_permission` (
   `description` varchar(500) DEFAULT NULL COMMENT '权限描述',
   `orders` int(11) DEFAULT NULL COMMENT '排序值',
   `status` tinyint(1) NOT NULL COMMENT '状态（0：禁用  1：正常）',
-  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `create_time` timestamp NULL DEFAULT NULL,
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -89,7 +89,7 @@ CREATE TABLE `auth_role` (
   `name` varchar(20) DEFAULT NULL COMMENT '角色名称',
   `description` varchar(500) DEFAULT NULL COMMENT '角色描述',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `create_time` timestamp NULL DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -108,7 +108,7 @@ CREATE TABLE `auth_system` (
   `description` varchar(500) DEFAULT NULL COMMENT '系统描述',
   `status` tinyint(1) NOT NULL,
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `create_time` timestamp NULL DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -131,10 +131,10 @@ CREATE TABLE `auth_user` (
   `avatar` varchar(45) DEFAULT NULL COMMENT '头像',
   `realname` varchar(20) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
-  `create_time` timestamp NULL DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_user
