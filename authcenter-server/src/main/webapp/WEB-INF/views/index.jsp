@@ -8,6 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="/authUser/create">添加用户</a>
+    <a href="/authUser/create">添加用户</a><br>
+    <a href="/authUser/list">查看用户列表</a>
 </body>
 </html>

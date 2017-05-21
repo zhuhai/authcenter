@@ -6,6 +6,7 @@ import com.zhuhai.mapper.AuthUserMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -27,5 +28,10 @@ public class AuthUserServiceImpl implements AuthUserService{
     @Override
     public void updateAuthUser(AuthUser authUser) {
         authUserMapper.updateAuthUser(authUser);
+    }
+
+    @Override
+    public List<AuthUser> selectAll() {
+        return authUserMapper.selectAll();
     }
 }

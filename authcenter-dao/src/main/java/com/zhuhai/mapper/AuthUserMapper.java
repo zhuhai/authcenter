@@ -2,6 +2,8 @@ package com.zhuhai.mapper;
 
 import com.zhuhai.entity.AuthUser;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhuhai
@@ -11,4 +13,5 @@ import com.zhuhai.entity.AuthUser;
 public interface AuthUserMapper {
     void insertAuthUser(AuthUser authUser);
     void updateAuthUser(AuthUser authUser);
+    List<AuthUser> selectAll();
 }

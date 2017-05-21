@@ -14,6 +14,10 @@
         UPDATE auth_user set username = #{userName},password = #{password} where id = #{id}
     </update>
 
+    <select id="selectAll" resultType="AuthUser">
+        SELECT id,username,email,phone,sex,avatar,realname,status,update_time,create_time FROM auth_user;
+    </select>
+
 
 
 </mapper>
