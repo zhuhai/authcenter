@@ -30,7 +30,7 @@ public class AuthUserController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createUser(AuthUser user) {
-        authUserService.createAuthUser(user);
+        authUserService.saveAuthUser(user);
         return "index";
     }
 

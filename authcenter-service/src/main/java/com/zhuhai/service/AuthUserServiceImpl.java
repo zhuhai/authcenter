@@ -21,13 +21,18 @@ public class AuthUserServiceImpl implements AuthUserService{
     AuthUserMapper authUserMapper;
 
     @Override
-    public void createAuthUser(AuthUser authUser) {
-        authUserMapper.insertAuthUser(authUser);
+    public int saveAuthUser(AuthUser authUser) {
+        return authUserMapper.insertAuthUser(authUser);
     }
 
     @Override
     public void updateAuthUser(AuthUser authUser) {
         authUserMapper.updateAuthUser(authUser);
+    }
+
+    @Override
+    public void removeAuthUser(int[] ids) {
+        authUserMapper.deleteAuthUser(ids);
     }
 
     @Override

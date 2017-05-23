@@ -11,7 +11,11 @@ import java.util.List;
  * Time: 18:25
  */
 public interface AuthUserMapper {
-    void insertAuthUser(AuthUser authUser);
+    int insertAuthUser(AuthUser authUser);
     void updateAuthUser(AuthUser authUser);
+    void deleteAuthUser(int[] ids);
+    AuthUser selectAuthUserById(int id);
+    AuthUser selectAuthUserByName(String userName);
+
     List<AuthUser> selectAll();
 }

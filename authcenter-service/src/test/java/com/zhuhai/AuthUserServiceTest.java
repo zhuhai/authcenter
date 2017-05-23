@@ -25,12 +25,13 @@ public class AuthUserServiceTest {
     @Test
     public void createUser(){
         AuthUser user = new AuthUser();
-        user.setUserName("jack");
+        user.setUserName("张三");
         user.setPassword("1234");
         user.setSalt("abcdsjfioewjf");
         user.setSex((byte) 0);
         user.setStatus((byte) 0);
-        //authUserService.createAuthUser(user);
+        /*int result = authUserService.saveAuthUser(user);
+        System.out.println("插入数量："+result);*/
     }
 
     @Test
@@ -40,6 +41,12 @@ public class AuthUserServiceTest {
        user.setPassword("abcd");
        user.setUserName("张三");
        //authUserService.updateAuthUser(user);
+    }
+
+    @Test
+    public void deleteUser() {
+        int[] ids = {1,5,9};
+        //authUserService.removeAuthUser(ids);
     }
 
 }

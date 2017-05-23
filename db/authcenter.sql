@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50611
 File Encoding         : 65001
 
-Date: 2017-05-19 18:12:30
+Date: 2017-05-23 16:41:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -98,6 +98,19 @@ CREATE TABLE `auth_role` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for auth_role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `auth_role_permission`;
+CREATE TABLE `auth_role_permission` (
+  `role_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of auth_role_permission
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for auth_system
 -- ----------------------------
 DROP TABLE IF EXISTS `auth_system`;
@@ -133,7 +146,8 @@ CREATE TABLE `auth_user` (
   `status` tinyint(1) DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -164,18 +178,5 @@ CREATE TABLE `auth_user_role` (
 
 -- ----------------------------
 -- Records of auth_user_role
--- ----------------------------
-
--- ----------------------------
--- Table structure for user_role_permission
--- ----------------------------
-DROP TABLE IF EXISTS `user_role_permission`;
-CREATE TABLE `user_role_permission` (
-  `role_id` int(11) NOT NULL,
-  `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user_role_permission
 -- ----------------------------
 SET FOREIGN_KEY_CHECKS=1;

@@ -11,7 +11,8 @@ import java.util.List;
  * Time: 18:29
  */
 public interface AuthUserService {
-    void createAuthUser(AuthUser authUser);
+    int saveAuthUser(AuthUser authUser);
     void updateAuthUser(AuthUser authUser);
+    void removeAuthUser(int[] ids);
     List<AuthUser> selectAll();
 }
