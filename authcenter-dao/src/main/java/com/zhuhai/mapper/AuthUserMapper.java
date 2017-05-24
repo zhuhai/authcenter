@@ -16,6 +16,7 @@ public interface AuthUserMapper {
     void deleteAuthUser(int[] ids);
     AuthUser selectAuthUserById(int id);
     AuthUser selectAuthUserByName(String userName);
+    List<AuthUser> selectAuthUserList();
 
-    List<AuthUser> selectAll();
+
 }

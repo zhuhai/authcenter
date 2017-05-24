@@ -1,8 +1,12 @@
 package com.zhuhai.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthUserService;
 import com.zhuhai.entity.AuthUser;
 import com.zhuhai.mapper.AuthUserMapper;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,7 +22,7 @@ import java.util.List;
 public class AuthUserServiceImpl implements AuthUserService{
 
     @Resource
-    AuthUserMapper authUserMapper;
+    private AuthUserMapper authUserMapper;
 
     @Override
     public int saveAuthUser(AuthUser authUser) {
@@ -32,11 +36,33 @@ public class AuthUserServiceImpl implements AuthUserService{
 
     @Override
     public void removeAuthUser(int[] ids) {
+        if (ArrayUtils.isEmpty(ids)) {
+            return;
+        }
         authUserMapper.deleteAuthUser(ids);
     }
 
     @Override
-    public List<AuthUser> selectAll() {
-        return authUserMapper.selectAll();
+    public AuthUser getAuthUserById(Integer id) {
+        if (id == null) {
+            return null;
+        }
+        return authUserMapper.selectAuthUserById(id);
     }
+
+    @Override
+    public AuthUser getAuthUserByName(String userName) {
+        if (StringUtils.isBlank(userName)) {
+            return null;
+        }
+        return authUserMapper.selectAuthUserByName(userName);
+    }
+
+    @Override
+    public PageInfo<AuthUser> listAuthUser(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<AuthUser> authUserList = authUserMapper.selectAuthUserList();
+        return new PageInfo<AuthUser>(authUserList);
+    }
+
 }

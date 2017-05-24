@@ -1,5 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html>
 <head>
@@ -15,13 +13,12 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <ul>
-        <c:forEach items="${authUserList}" var="authUser">
-            <li>${authUser.userName}</li>
-        </c:forEach>
-    </ul>
-</div>
+    <div class="container">
+        <form action="/authUser/create" method="post">
+            <span>用户名：</span><input type="text" name="userName"/><br>
+            <span>密码：</span><input type="password" name="password"/><br>
+            <button type="submit">提交</button>
+        </form>
+    </div>
 </body>
 </html>
-

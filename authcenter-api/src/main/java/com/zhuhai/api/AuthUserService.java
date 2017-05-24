@@ -1,8 +1,7 @@
 package com.zhuhai.api;
 
+import com.github.pagehelper.PageInfo;
 import com.zhuhai.entity.AuthUser;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,5 +13,7 @@ public interface AuthUserService {
     int saveAuthUser(AuthUser authUser);
     void updateAuthUser(AuthUser authUser);
     void removeAuthUser(int[] ids);
-    List<AuthUser> selectAll();
+    AuthUser getAuthUserById(Integer id);
+    AuthUser getAuthUserByName(String userName);
+    PageInfo<AuthUser> listAuthUser(Integer pageNum, Integer pageSize);
 }

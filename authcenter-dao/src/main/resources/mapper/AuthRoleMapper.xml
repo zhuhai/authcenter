@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuhai.mapper.AuthRoleMapper">
+
+    <sql id="select_column_list">
+        id,code,`name`,description,update_time,create_time
+    </sql>
+
+    <!--添加角色-->
+    <insert id="insertAuthRole" parameterType="AuthRole">
+        INSERT INTO auth_role (id,code,`name`,description) VALUES (#{id},#{code},#{name},#{description});
+    </insert>
+
+    <!--修改角色-->
+    <update id="updateAuthRole" parameterType="AuthRole">
+        UPDATE auth_role
+        <set>
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="description != null">description = #{description}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteAuthRole">
+        DELETE FROM auth_role WHERE id IN
+        <foreach collection="array" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据角色id查找角色-->
+    <select id="selectAuthRoleById" resultType="AuthRole">
+        SELECT <include refid="select_column_list"/> FROM auth_role WHERE id = #{id}
+    </select>
+
+    <!--根据用户id获取用户的角色-->
+    <select id="selectAuthRoleListByUserId" resultType="AuthRole">
+      SELECT <include refid="select_column_list"/> FROM auth_role r WHERE r.id IN
+        (SELECT ur.role_id FROM auth_user_role ur WHERE ur.user_id = #{userId});
+    </select>
+
+    <!--角色列表-->
+    <select id="selectAuthRoleList" resultType="AuthRole">
+        SELECT <include refid="select_column_list"/> FROM auth_role;
+
+    </select>
+
+
+</mapper>

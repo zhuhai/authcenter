@@ -9,24 +9,39 @@
       id,username,`password`,salt,email,phone,sex,avatar,realname,status,update_time,create_time
     </sql>
 
-
+    <!--添加用户-->
     <insert id="insertAuthUser" parameterType="AuthUser" useGeneratedKeys="true" keyProperty="id">
       INSERT ignore INTO auth_user(id,username,`password`,salt,email,phone,sex,avatar,realname,status)
       VALUES (#{id},#{userName},#{password},#{salt},#{email},#{phone},#{sex},#{avatar},#{realName},#{status})
     </insert>
 
+    <!--修改用户-->
     <update id="updateAuthUser" parameterType="AuthUser">
-      UPDATE auth_user set username = #{userName},password = #{password} where id = #{id}
+      UPDATE auth_user
+      <set>
+          <if test="userName != null">username = #{userName},</if>
+          <if test="password != null">password = #{password},</if>
+          <if test="email != null">email = #{email},</if>
+          <if test="phone != null">phone = #{phone},</if>
+          <if test="avatar != null">avatar = #{avatar},</if>
+          <if test="realName != null">realname = #{realName},</if>
+          <if test="sex != null">sex = #{sex},</if>
+          <if test="status != null">status = #{status}</if>
+      </set>
+      WHERE id = #{id}
     </update>
-    
+
+    <!--根据用户id查找用户-->
     <select id="selectAuthUserById" parameterType="int" resultType="AuthUser">
-      SELECT <include refid="select_column_list"/> FROM auth_user WHERE id = #{id};
+      SELECT <include refid="select_column_list"/> FROM auth_user WHERE id = #{id}
     </select>
 
+    <!--根据用户名查找用户-->
     <select id="selectAuthUserByName" parameterType="string" resultType="AuthUser">
-      SELECT <include refid="select_column_list"/> FROM auth_user WHERE username = #{userName};
+      SELECT <include refid="select_column_list"/> FROM auth_user WHERE username = #{userName}
     </select>
 
+    <!--删除用户-->
     <delete id="deleteAuthUser" >
       DELETE FROM auth_user WHERE id IN
       <foreach collection="array" index="index" item="id" open="(" separator="," close=")">
@@ -34,8 +49,9 @@
       </foreach>
     </delete>
 
-    <select id="selectAll" resultType="AuthUser">
-        SELECT id,username,email,phone,sex,avatar,realname,status,update_time,create_time FROM auth_user;
+    <!--用户列表-->
+    <select id="selectAuthUserList" resultType="AuthUser">
+        SELECT id,username,email,phone,sex,avatar,realname,status,update_time,create_time FROM auth_user
     </select>
 
 

@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html>
 <head>
@@ -14,12 +13,17 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <form action="/authUser/create" method="post">
-            <span>用户名：</span><input type="text" name="userName"/><br>
-            <span>密码：</span><input type="password" name="password"/><br>
-            <button type="submit">提交</button>
-        </form>
-    </div>
+<div class="container">
+    <ul>
+        <#if authUserList??>
+            <#list authUserList as authUser>
+                <li>${authUser.userName}</li>
+            </#list>
+        </#if>
+
+
+    </ul>
+</div>
 </body>
 </html>
+

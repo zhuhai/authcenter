@@ -1,5 +1,6 @@
 package com.zhuhai.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthUserService;
 import com.zhuhai.entity.AuthUser;
 import org.springframework.stereotype.Controller;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,8 +36,8 @@ public class AuthUserController {
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public String getAuthUserList(Model model) {
-        List<AuthUser> authUserList = authUserService.selectAll();
-        model.addAttribute("authUserList",authUserList);
+        PageInfo<AuthUser> pageInfo = authUserService.listAuthUser(1,10);
+        model.addAttribute("authUserList",pageInfo.getList());
         return "userList";
     }
 
