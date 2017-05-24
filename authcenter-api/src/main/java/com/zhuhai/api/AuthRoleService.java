@@ -1,5 +1,6 @@
 package com.zhuhai.api;
 
+import com.github.pagehelper.PageInfo;
 import com.zhuhai.entity.AuthRole;
 
 import java.util.List;
@@ -17,6 +18,6 @@ public interface AuthRoleService {
     void removeAuthRole(int[] ids);
     AuthRole getAuthRole(Integer id);
     List<AuthRole> listAuthRoleByUserId(Integer userId);
-    List<AuthRole> listAuthRole();
+    PageInfo<AuthRole> listAuthRole(Integer pageNum, Integer pageSize);
 
 }

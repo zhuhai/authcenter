@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuhai.mapper.AuthPermissionMapper">
+
+    <sql id="select_column_list">
+        id,`name`,`type`,pid,icon,url,system_id,description,orders,status,update_time,create_time
+    </sql>
+    <!--添加权限-->
+    <insert id="insertAuthPermission" parameterType="AuthPermission">
+      INSERT INTO auth_permission(id,`name`,`type`,pid,icon,url,system_id,description,orders,status)
+        VALUES (#{id},#{name},#{type},#{pid},#{icon},#{url},#{systemId},#{description},#{orders},#{status});
+    </insert>
+    <!--修改权限-->
+    <update id="updateAuthPermission" parameterType="AuthPermission">
+        UPDATE auth_permission
+        <set>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="type != null">`type` = #{type},</if>
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="systemId != null">system_id = #{systemId},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="orders != null">orders = #{orders},</if>
+            <if test="status != null">status = #{status}</if>
+        </set>
+    </update>
+    <!--删除权限-->
+    <delete id="deleteAuthPermission">
+        DELETE FROM auth_permission WHERE id IN
+        <foreach collection="array" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectAuthPermissionById" resultType="AuthPermission">
+        SELECT <include refid="select_column_list"/> FROM auth_permission WHERE id = #{id};
+    </select>
+
+    <select id="selectAuthPermissionList" resultType="AuthPermission">
+        SELECT <include refid="select_column_list"/> FROM auth_permission
+    </select>
+
+
+</mapper>

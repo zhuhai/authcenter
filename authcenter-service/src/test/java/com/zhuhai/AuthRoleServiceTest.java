@@ -1,11 +1,14 @@
 package com.zhuhai;
 
+import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthRoleService;
 import com.zhuhai.entity.AuthRole;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 
@@ -33,13 +36,8 @@ public class AuthRoleServiceTest {
 
     @Test
     public void listAuthRole() {
-        /*List<AuthRole> authRoleList = authRoleService.listAuthRoleByUserId(12);
-        if (!CollectionUtils.isEmpty(authRoleList)) {
-            System.out.println(authRoleList.size());
-            for (AuthRole authRole : authRoleList) {
-                System.out.println(authRole.getCode());
-                System.out.println(authRole.getName());
-            }
-        }*/
+        PageInfo<AuthRole> pageInfo = authRoleService.listAuthRole(1,10);
+        Assert.assertNotNull(pageInfo);
+        Assert.assertTrue(CollectionUtils.isEmpty(pageInfo.getList()));
     }
 }

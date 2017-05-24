@@ -1,10 +1,13 @@
 package com.zhuhai.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthRoleService;
 import com.zhuhai.entity.AuthRole;
 import com.zhuhai.mapper.AuthRoleMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
  * Time: 14:17
  */
 @Service
+@Transactional
 public class AuthRoleServiceImpl implements AuthRoleService {
 
     @Resource
@@ -50,8 +54,10 @@ public class AuthRoleServiceImpl implements AuthRoleService {
     }
 
     @Override
-    public List<AuthRole> listAuthRole() {
-        return authRoleMapper.selectAuthRoleList();
+    public PageInfo<AuthRole> listAuthRole(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<AuthRole> authRoleList = authRoleMapper.selectAuthRoleList();
+        return new PageInfo<AuthRole>(authRoleList);
     }
 
     @Override
