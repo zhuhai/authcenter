@@ -3,7 +3,7 @@
 <mapper namespace="com.zhuhai.mapper.AuthPermissionMapper">
 
     <sql id="select_column_list">
-        id,`name`,`type`,pid,icon,url,system_id,description,orders,status,update_time,create_time
+        id,`name`,code,`type`,pid,icon,url,system_id,description,orders,status,update_time,create_time
     </sql>
     <!--添加权限-->
     <insert id="insertAuthPermission" parameterType="AuthPermission">
@@ -15,6 +15,7 @@
         UPDATE auth_permission
         <set>
             <if test="name != null">`name` = #{name},</if>
+            <if test="code != null">code = #{code},</if>
             <if test="type != null">`type` = #{type},</if>
             <if test="pid != null">pid = #{pid},</if>
             <if test="icon != null">icon = #{icon},</if>
@@ -24,6 +25,7 @@
             <if test="orders != null">orders = #{orders},</if>
             <if test="status != null">status = #{status}</if>
         </set>
+        WHERE id = #{id}
     </update>
     <!--删除权限-->
     <delete id="deleteAuthPermission">
@@ -39,6 +41,17 @@
 
     <select id="selectAuthPermissionList" resultType="AuthPermission">
         SELECT <include refid="select_column_list"/> FROM auth_permission
+    </select>
+
+    <select id="selectAuthPermissionByUserId" resultType="java.lang.String">
+        SELECT p.code FROM auth_permission p WHERE status = 1 AND p.id IN
+          (SELECT rp.permission_id FROM auth_role_permission rp WHERE rp.role_id IN
+            (SELECT ur.role_id FROM auth_user_role ur WHERE ur.user_id = #{userId}))
+            ORDER BY p.orders ASC;
+    </select>
+    <select id="selectAuthPermissionByRoleId" resultType="AuthPermission">
+        SELECT <include refid="select_column_list"/> FROM auth_permission p WHERE p.id IN
+        (SELECT rp.permission_id FROM auth_role_permission rp WHERE rp.role_id = #{roleId})
     </select>
 
 

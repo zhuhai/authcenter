@@ -14,14 +14,23 @@ public class AuthUser implements Serializable {
     private static final long serialVersionUID = -4612824303758152021L;
 
     private Integer id;
+    /**用户名**/
     private String userName;
+    /**密码**/
     private String password;
+    /**盐**/
     private String salt;
+    /**邮箱**/
     private String email;
+    /**手机号**/
     private String phone;
+    /**性别**/
     private Byte sex;
+    /**头像**/
     private String avatar;
+    /**真实姓名**/
     private String realName;
+    /**状态（0：禁用 1：正常）**/
     private Byte status;
     private Date createTime;
     private Date updateTime;

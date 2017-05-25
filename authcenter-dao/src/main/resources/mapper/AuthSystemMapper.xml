@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuhai.mapper.AuthSystemMapper">
+
+    <sql id="select_column_list">
+        id,`name`,title,description,status,update_time,create_time
+    </sql>
+
+    <insert id="insertAuthSystem" parameterType="AuthSystem">
+        insert into auth_system (id,`name`,title,description,status) values (#{id},#{name},#{title},#{description},#{status});
+    </insert>
+
+    <update id="upateAuthSystem" parameterType="AuthSystem">
+        UPDATE auth_system
+        <set>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteAuthSystem">
+      DELETE FROM auth_system WHERE id IN
+      <foreach collection="array" index="index" item="id" open="(" separator="," close=")">
+          #{id}
+      </foreach>
+    </delete>
+
+    <select id="selectAuthSystemById" resultType="AuthSystem">
+        SELECT <include refid="select_column_list"/> FROM auth_system WHERE id = #{id}
+    </select>
+
+    <select id="selectAuthSystemList" resultType="AuthSystem">
+        SELECT <include refid="select_column_list"/> FROM auth_system
+    </select>
+
+
+</mapper>

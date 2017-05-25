@@ -7,6 +7,10 @@
     <dubbo:application name="authcenter-server"/>
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 
+    <dubbo:consumer check="true"/>
+
     <dubbo:reference interface="com.zhuhai.api.AuthUserService" id="authUserService"/>
+    <dubbo:reference interface="com.zhuhai.api.AuthRoleService" id="authRoleService"/>
+    <dubbo:reference interface="com.zhuhai.api.AuthPermissionService" id="authPermissionService"/>
 
 </beans>

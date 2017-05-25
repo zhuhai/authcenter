@@ -4,7 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthRoleService;
 import com.zhuhai.entity.AuthRole;
+import com.zhuhai.entity.AuthUser;
 import com.zhuhai.mapper.AuthRoleMapper;
+import com.zhuhai.mapper.AuthUserMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,10 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 
     @Resource
     private AuthRoleMapper authRoleMapper;
+
+    @Resource
+    private AuthUserMapper authUserMapper;
+
 
     @Override
     public int saveAuthRole(AuthRole authRole) {
@@ -63,6 +69,11 @@ public class AuthRoleServiceImpl implements AuthRoleService {
     @Override
     public List<AuthRole> listAuthRoleByUserId(Integer userId) {
         if (userId == null) {
+            return null;
+        }
+        AuthUser authUser = authUserMapper.selectAuthUserById(userId);
+        //用户不存在或者用户已被禁用
+        if (authUser == null || authUser.getStatus() == 0) {
             return null;
         }
         return authRoleMapper.selectAuthRoleListByUserId(userId);

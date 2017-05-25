@@ -14,15 +14,27 @@ public class AuthPermission implements Serializable {
     private static final long serialVersionUID = -8266743172859829125L;
 
     private Integer id;
+    /**权限码**/
     private String code;
+    /**权限名称**/
     private String name;
+    /**类型（1：目录 2：菜单 3：按钮）**/
     private Byte type;
+    /**父id**/
     private Integer pid;
+    /**图标**/
     private String icon;
+    /**链接**/
     private String url;
+    /**所属id**/
     private String systemId;
+    /**排序值，从小到大排序**/
     private Integer orders;
+    /**
+     * 状态（0：禁用 1：正常）
+     */
     private Byte status;
+    /**权限描述**/
     private String description;
     private Date updateTime;
     private Date createTime;

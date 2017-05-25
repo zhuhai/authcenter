@@ -13,11 +13,45 @@ import java.util.List;
  */
 public interface AuthRoleService {
 
+    /**
+     * 添加角色
+     * @param authRole
+     * @return
+     */
     int saveAuthRole(AuthRole authRole);
+
+    /**
+     * 修改角色
+     * @param authRole
+     */
     void updateAuthRole(AuthRole authRole);
+
+    /**
+     * 删除角色
+     * @param ids
+     */
     void removeAuthRole(int[] ids);
+
+    /**
+     * 根据角色id查找角色
+     * @param id
+     * @return
+     */
     AuthRole getAuthRole(Integer id);
+
+    /**
+     * 根据用户id获取用户的角色列表
+     * @param userId
+     * @return
+     */
     List<AuthRole> listAuthRoleByUserId(Integer userId);
+
+    /**
+     * 分页获取角色列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     PageInfo<AuthRole> listAuthRole(Integer pageNum, Integer pageSize);
 
 }
