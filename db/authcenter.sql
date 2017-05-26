@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50611
 File Encoding         : 65001
 
-Date: 2017-05-23 16:41:34
+Date: 2017-05-26 15:42:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -61,8 +61,9 @@ CREATE TABLE `auth_organization` (
 DROP TABLE IF EXISTS `auth_permission`;
 CREATE TABLE `auth_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(100) DEFAULT NULL,
   `name` varchar(45) NOT NULL COMMENT '权限名称',
-  `type` tinyint(1) NOT NULL COMMENT '类型（0：菜单  1：按钮）',
+  `type` tinyint(1) NOT NULL COMMENT '类型（1：目录  2：菜单 3：按钮）',
   `pid` int(11) DEFAULT NULL COMMENT '父级',
   `icon` varchar(45) DEFAULT NULL COMMENT '图标',
   `url` varchar(100) DEFAULT NULL,
@@ -73,11 +74,15 @@ CREATE TABLE `auth_permission` (
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_permission
 -- ----------------------------
+INSERT INTO `auth_permission` VALUES ('1', '', '系统组织管理', '1', '0', null, null, '1', '', '1', '1', '2017-05-25 16:03:48', '2017-05-25 15:58:55');
+INSERT INTO `auth_permission` VALUES ('2', 'upms:system:read', '系统管理', '2', '1', null, null, '1', null, '5', '1', '2017-05-25 16:17:16', '2017-05-25 16:00:33');
+INSERT INTO `auth_permission` VALUES ('3', null, '组织管理', '2', '1', null, null, '1', null, '3', '1', '2017-05-25 16:16:29', '2017-05-25 16:13:35');
+INSERT INTO `auth_permission` VALUES ('4', null, '添加用户', '3', '1', null, null, '1', null, '3', '1', '2017-05-26 13:23:02', '2017-05-26 13:23:02');
 
 -- ----------------------------
 -- Table structure for auth_role
@@ -91,11 +96,12 @@ CREATE TABLE `auth_role` (
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_role
 -- ----------------------------
+INSERT INTO `auth_role` VALUES ('1', 'admin', '管理员', '管理员角色', '2017-05-24 14:31:28', '2017-05-24 14:31:28');
 
 -- ----------------------------
 -- Table structure for auth_role_permission
@@ -103,12 +109,16 @@ CREATE TABLE `auth_role` (
 DROP TABLE IF EXISTS `auth_role_permission`;
 CREATE TABLE `auth_role_permission` (
   `role_id` int(11) NOT NULL,
-  `permission_id` int(11) NOT NULL
+  `permission_id` int(11) NOT NULL,
+  UNIQUE KEY `uk_role_permission` (`role_id`,`permission_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_role_permission
 -- ----------------------------
+INSERT INTO `auth_role_permission` VALUES ('1', '1');
+INSERT INTO `auth_role_permission` VALUES ('1', '2');
+INSERT INTO `auth_role_permission` VALUES ('1', '3');
 
 -- ----------------------------
 -- Table structure for auth_system
@@ -143,12 +153,12 @@ CREATE TABLE `auth_user` (
   `sex` tinyint(1) DEFAULT NULL,
   `avatar` varchar(45) DEFAULT NULL COMMENT '头像',
   `realname` varchar(20) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态（0：禁用  1：正常）',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_user
@@ -160,7 +170,8 @@ CREATE TABLE `auth_user` (
 DROP TABLE IF EXISTS `auth_user_organization`;
 CREATE TABLE `auth_user_organization` (
   `user_id` int(11) NOT NULL,
-  `organization_id` int(11) NOT NULL
+  `organization_id` int(11) NOT NULL,
+  UNIQUE KEY `uk_user_organization` (`user_id`,`organization_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -173,10 +184,13 @@ CREATE TABLE `auth_user_organization` (
 DROP TABLE IF EXISTS `auth_user_role`;
 CREATE TABLE `auth_user_role` (
   `user_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL
+  `role_id` int(11) NOT NULL,
+  UNIQUE KEY `uk_user_role` (`user_id`,`role_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_user_role
 -- ----------------------------
+INSERT INTO `auth_user_role` VALUES ('1', '1');
+INSERT INTO `auth_user_role` VALUES ('1', '2');
 SET FOREIGN_KEY_CHECKS=1;
