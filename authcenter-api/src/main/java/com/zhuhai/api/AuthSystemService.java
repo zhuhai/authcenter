@@ -2,6 +2,7 @@ package com.zhuhai.api;
 
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.entity.AuthSystem;
+import com.zhuhai.exception.ServiceException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,26 +16,26 @@ public interface AuthSystemService {
      * @param authSystem
      * @return
      */
-    int saveAuthSystem(AuthSystem authSystem);
+    int saveAuthSystem(AuthSystem authSystem) throws ServiceException;
 
     /**
      * 修改系统
      * @param authSystem
      */
-    void updateAuthSystem(AuthSystem authSystem);
+    void updateAuthSystem(AuthSystem authSystem) throws ServiceException;
 
     /**
      * 删除系统
      * @param ids
      */
-    void deleteAuthSystem(int[] ids);
+    void deleteAuthSystem(int[] ids) throws ServiceException;
 
     /**
      * 根据系统id获取系统
      * @param id
      * @return
      */
-    AuthSystem getAuthSystem(Integer id);
+    AuthSystem getAuthSystem(Integer id) throws ServiceException;
 
     /**
      * 分页获取系统列表
@@ -42,5 +43,5 @@ public interface AuthSystemService {
      * @param pageSize
      * @return
      */
-    PageInfo<AuthSystem> listAuthSystem(Integer pageNum, Integer pageSize);
+    PageInfo<AuthSystem> listAuthSystem(Integer pageNum, Integer pageSize) throws ServiceException;
 }

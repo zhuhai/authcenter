@@ -55,5 +55,18 @@ public interface AuthUserService {
      */
     PageInfo<AuthUser> listAuthUser(Integer pageNum, Integer pageSize) throws ServiceException;
 
+    /**
+     * 添加用户角色
+     * @param authUserRoles
+     * @return
+     * @throws ServiceException
+     */
     int saveAuthUserRoles(List<AuthUserRole> authUserRoles) throws ServiceException;
+
+    /**
+     * 根据用户id删除用户角色
+     * @param userId
+     * @throws ServiceException
+     */
+    void removeAuthUserRoles(Integer userId) throws ServiceException;
 }

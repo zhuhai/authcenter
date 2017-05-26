@@ -2,6 +2,7 @@ package com.zhuhai.api;
 
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.entity.AuthPermission;
+import com.zhuhai.exception.ServiceException;
 
 import java.util.List;
 
@@ -17,26 +18,26 @@ public interface AuthPermissionService {
      * @param authPermission
      * @return
      */
-    int saveAuthPermission(AuthPermission authPermission);
+    int saveAuthPermission(AuthPermission authPermission) throws ServiceException;
 
     /**
      * 修改权限
      * @param authPermission
      */
-    void updateAuthPermission(AuthPermission authPermission);
+    void updateAuthPermission(AuthPermission authPermission) throws ServiceException;
 
     /**
      * 删除权限
      * @param ids
      */
-    void removeAuthPermission(int[] ids);
+    void removeAuthPermission(int[] ids) throws ServiceException;
 
     /**
      * 根据权限id获取权限
      * @param id
      * @return
      */
-    AuthPermission getAuthPermissionById(Integer id);
+    AuthPermission getAuthPermissionById(Integer id) throws ServiceException;
 
     /**
      * 分页获取权限列表
@@ -44,19 +45,19 @@ public interface AuthPermissionService {
      * @param pageSize
      * @return
      */
-    PageInfo<AuthPermission> listAuthPermission(Integer pageNum, Integer pageSize);
+    PageInfo<AuthPermission> listAuthPermission(Integer pageNum, Integer pageSize) throws ServiceException;
 
     /**
      * 根据用户id获取用户的权限
      * @param userId
      * @return
      */
-    List<String> listAuthPermissionByUserId(Integer userId);
+    List<String> listAuthPermissionByUserId(Integer userId) throws ServiceException;
 
     /**
      * 根据角色id获取该角色的权限
      * @param roleId
      * @return
      */
-    List<AuthPermission> listAuthPermissionByRoleId(Integer roleId);
+    List<AuthPermission> listAuthPermissionByRoleId(Integer roleId) throws ServiceException;
 }

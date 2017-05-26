@@ -80,7 +80,14 @@ public class AuthUserServiceImpl implements AuthUserService{
         if (CollectionUtils.isEmpty(authUserRoles)) {
             return 0;
         }
-        return authUserRoleMapper.saveAuthUserRoles(authUserRoles);
+        return authUserRoleMapper.insertAuthUserRoles(authUserRoles);
+    }
+
+    public void removeAuthUserRoles(Integer userId) {
+        if (userId == null) {
+            return;
+        }
+        authUserRoleMapper.deleteAuthUserRolesByUserId(userId);
     }
 
 }

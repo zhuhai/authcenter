@@ -4,12 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthRoleService;
 import com.zhuhai.entity.AuthRole;
+import com.zhuhai.entity.AuthRolePermission;
 import com.zhuhai.entity.AuthUser;
+import com.zhuhai.exception.ServiceException;
 import com.zhuhai.mapper.AuthRoleMapper;
+import com.zhuhai.mapper.AuthRolePermissionMapper;
 import com.zhuhai.mapper.AuthUserMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,9 +30,10 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 
     @Resource
     private AuthRoleMapper authRoleMapper;
-
     @Resource
     private AuthUserMapper authUserMapper;
+    @Resource
+    private AuthRolePermissionMapper authRolePermissionMapper;
 
 
     @Override
@@ -78,4 +83,22 @@ public class AuthRoleServiceImpl implements AuthRoleService {
         }
         return authRoleMapper.selectAuthRoleListByUserId(userId);
     }
+
+    @Override
+    public int saveRolePermissions(List<AuthRolePermission> authRolePermissions) throws ServiceException {
+        if (CollectionUtils.isEmpty(authRolePermissions)) {
+            return 0;
+        }
+        return authRolePermissionMapper.insertAuthRolePermissions(authRolePermissions);
+    }
+
+    @Override
+    public void removeRolePermissionsByRoleId(Integer roleId) throws ServiceException {
+        if (roleId == null) {
+            return;
+        }
+        authRolePermissionMapper.deleteAuthRolePermissionsByRoleId(roleId);
+    }
+
+
 }

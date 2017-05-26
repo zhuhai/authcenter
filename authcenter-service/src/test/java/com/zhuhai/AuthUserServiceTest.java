@@ -1,7 +1,6 @@
 package com.zhuhai;
 
 import com.zhuhai.api.AuthUserService;
-import com.zhuhai.entity.AuthUser;
 import com.zhuhai.exception.ServiceException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,14 +25,14 @@ public class AuthUserServiceTest {
 
     @Test
     public void createUser() throws ServiceException {
-        AuthUser user = new AuthUser();
+        /*AuthUser user = new AuthUser();
         user.setUserName("张三");
         user.setPassword("123456");
         user.setSalt("abcdsjfioewjf");
         user.setSex((byte) 0);
         user.setStatus((byte) 0);
         int result = authUserService.saveAuthUser(user);
-        System.out.println("插入数量："+result);
+        System.out.println("插入数量："+result);*/
 
     }
 
