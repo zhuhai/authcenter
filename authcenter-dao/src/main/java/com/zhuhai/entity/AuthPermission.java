@@ -26,8 +26,8 @@ public class AuthPermission implements Serializable {
     private String icon;
     /**链接**/
     private String url;
-    /**所属id**/
-    private String systemId;
+    /**所属系统id**/
+    private Integer systemId;
     /**排序值，从小到大排序**/
     private Integer orders;
     /**
@@ -95,11 +95,11 @@ public class AuthPermission implements Serializable {
         this.url = url;
     }
 
-    public String getSystemId() {
+    public Integer getSystemId() {
         return systemId;
     }
 
-    public void setSystemId(String systemId) {
+    public void setSystemId(Integer systemId) {
         this.systemId = systemId;
     }
 

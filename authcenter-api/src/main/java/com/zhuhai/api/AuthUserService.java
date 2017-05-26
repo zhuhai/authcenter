@@ -2,6 +2,10 @@ package com.zhuhai.api;
 
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.entity.AuthUser;
+import com.zhuhai.entity.AuthUserRole;
+import com.zhuhai.exception.ServiceException;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,33 +19,33 @@ public interface AuthUserService {
      * @param authUser
      * @return
      */
-    int saveAuthUser(AuthUser authUser);
+    int saveAuthUser(AuthUser authUser) throws ServiceException;
 
     /**
      * 修改用户
      * @param authUser
      */
-    void updateAuthUser(AuthUser authUser);
+    void updateAuthUser(AuthUser authUser) throws ServiceException;
 
     /**
      * 删除用户
      * @param ids
      */
-    void removeAuthUser(int[] ids);
+    void removeAuthUser(int[] ids) throws ServiceException;
 
     /**
      * 根据用户id获取用户
      * @param id
      * @return
      */
-    AuthUser getAuthUserById(Integer id);
+    AuthUser getAuthUserById(Integer id) throws ServiceException;
 
     /**
      * 根据用户名获取用户
      * @param userName
      * @return
      */
-    AuthUser getAuthUserByName(String userName);
+    AuthUser getAuthUserByName(String userName) throws ServiceException;
 
     /**
      * 分页获取用户列表
@@ -49,5 +53,7 @@ public interface AuthUserService {
      * @param pageSize
      * @return
      */
-    PageInfo<AuthUser> listAuthUser(Integer pageNum, Integer pageSize);
+    PageInfo<AuthUser> listAuthUser(Integer pageNum, Integer pageSize) throws ServiceException;
+
+    int saveAuthUserRoles(List<AuthUserRole> authUserRoles) throws ServiceException;
 }

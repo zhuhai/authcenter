@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuhai.mapper.AuthLogMapper">
+
+    <sql id="select_column_list">
+        id,username,start_time,send_time,url,ip,method,parameter,user_agent,result
+    </sql>
+
+    <!--添加日志-->
+    <insert id="insertAuthLog" parameterType="AuthLog" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+      INSERT INTO auth_log(id,username,send_time,url,ip,method,parameter,user_agent,result)
+        VALUES (#{id},#{userName},#{sendTime},#{url},#{ip},#{method},#{parameter},#{userAgent},#{result});
+    </insert>
+
+    <!--根据id查询日志-->
+    <select id="selectAuthLogById" resultType="AuthLog">
+      SELECT <include refid="select_column_list"/> FROM auth_log WHERE id = #{id}
+    </select>
+
+    <!--日志列表-->
+    <select id="selectAuthLogList" resultType="AuthLog">
+        SELECT <include refid="select_column_list"/> FROM auth_log
+    </select>
+
+
+</mapper>

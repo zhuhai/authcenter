@@ -17,6 +17,6 @@ public interface AuthPermissionMapper {
     void deleteAuthPermission(int[] ids);
     AuthPermission selectAuthPermissionById(int id);
     List<AuthPermission> selectAuthPermissionList();
-    List<String> selectAuthPermissionByUserId(Integer userId);
-    List<AuthPermission> selectAuthPermissionByRoleId(Integer roleId);
+    List<String> selectAuthPermissionByUserId(int userId);
+    List<AuthPermission> selectAuthPermissionByRoleId(int roleId);
 }

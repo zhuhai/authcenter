@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuhai.mapper.AuthOrganizationMapper">
+
+    <sql id="select_column_list">
+        id,`name`,description,pid,update_time,create_time
+    </sql>
+
+    <!--添加组织-->
+    <insert id="insertAuthOrganization" parameterType="AuthOrganization" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO auth_organization(id,`name`,description,pid) VALUES (#{id},#{name},#{description},#{pid});
+    </insert>
+    <!--修改组织-->
+    <update id="updateAuthOrganization" parameterType="AuthOrganization">
+        UPDATE auth_organization
+        <set>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="pid != null">pid = #{pid}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <!--删除组织-->
+    <delete id="deleteAuthOrganization">
+        DELETE FROM auth_organization WHERE id IN
+        <foreach collection="array" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据组织id查找组织-->
+    <select id="selectAuthOrganization" resultType="AuthOrganization">
+        SELECT <include refid="select_column_list"/> FROM auth_organization WHERE id = #{id}
+    </select>
+
+    <select id="selectAuthOrganizationList" resultType="AuthOrganization">
+        SELECT <include refid="select_column_list"/> FROM auth_organization
+    </select>
+</mapper>

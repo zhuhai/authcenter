@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuhai.mapper.AuthUserRoleMapper">
+
+
+    <insert id="saveAuthUserRoles">
+        INSERT INTO auth_user_role(user_id, role_id) VALUES
+        <foreach collection="list" item="authUserRole" separator=",">
+            (#{authUserRole.userId},#{authUserRole.roleId})
+        </foreach>
+    </insert>
+</mapper>

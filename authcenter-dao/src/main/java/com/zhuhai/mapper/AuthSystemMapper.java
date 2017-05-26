@@ -13,8 +13,8 @@ import java.util.List;
 public interface AuthSystemMapper {
 
     int insertAuthSystem(AuthSystem authSystem);
-    void upateAuthSystem(AuthSystem authSystem);
+    void updateAuthSystem(AuthSystem authSystem);
     void deleteAuthSystem(int[] ids);
-    AuthSystem selectAuthSystemById(Integer id);
+    AuthSystem selectAuthSystemById(int id);
     List<AuthSystem> selectAuthSystemList();
 }

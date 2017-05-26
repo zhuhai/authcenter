@@ -7,7 +7,7 @@
     </sql>
 
     <!--添加角色-->
-    <insert id="insertAuthRole" parameterType="AuthRole">
+    <insert id="insertAuthRole" parameterType="AuthRole" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO auth_role (id,code,`name`,description) VALUES (#{id},#{code},#{name},#{description});
     </insert>
 
@@ -21,7 +21,7 @@
         </set>
         WHERE id = #{id}
     </update>
-
+    <!--删除角色-->
     <delete id="deleteAuthRole">
         DELETE FROM auth_role WHERE id IN
         <foreach collection="array" item="id" index="index" open="(" separator="," close=")">

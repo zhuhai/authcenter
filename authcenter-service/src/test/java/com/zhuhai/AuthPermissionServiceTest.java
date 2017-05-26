@@ -37,4 +37,20 @@ public class AuthPermissionServiceTest {
 
     }
 
+    @Test
+    public void saveAuthPermission() {
+        /*AuthPermission authPermission = new AuthPermission();
+        authPermission.setCode("authcenter:user:create");
+        authPermission.setName("添加用户");
+        authPermission.setOrders(3);
+        authPermission.setPid(1);
+        authPermission.setType((byte) 3);
+        authPermission.setStatus((byte) 1);
+        authPermission.setSystemId(1);
+        System.out.println("userId:"+authPermission.getId());
+        int count = authPermissionService.saveAuthPermission(authPermission);
+        System.out.println("count:"+count);
+        System.out.println("userId:"+authPermission.getId());*/
+    }
+
 }

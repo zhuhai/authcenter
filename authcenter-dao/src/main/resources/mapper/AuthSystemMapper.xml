@@ -6,11 +6,13 @@
         id,`name`,title,description,status,update_time,create_time
     </sql>
 
-    <insert id="insertAuthSystem" parameterType="AuthSystem">
+    <!--添加系统-->
+    <insert id="insertAuthSystem" parameterType="AuthSystem" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into auth_system (id,`name`,title,description,status) values (#{id},#{name},#{title},#{description},#{status});
     </insert>
 
-    <update id="upateAuthSystem" parameterType="AuthSystem">
+    <!--修改系统-->
+    <update id="updateAuthSystem" parameterType="AuthSystem">
         UPDATE auth_system
         <set>
             <if test="name != null">`name` = #{name},</if>
@@ -21,6 +23,7 @@
         WHERE id = #{id}
     </update>
 
+    <!--删除系统-->
     <delete id="deleteAuthSystem">
       DELETE FROM auth_system WHERE id IN
       <foreach collection="array" index="index" item="id" open="(" separator="," close=")">
@@ -28,10 +31,12 @@
       </foreach>
     </delete>
 
+    <!--根据系统id查找系统-->
     <select id="selectAuthSystemById" resultType="AuthSystem">
         SELECT <include refid="select_column_list"/> FROM auth_system WHERE id = #{id}
     </select>
 
+    <!--系统列表-->
     <select id="selectAuthSystemList" resultType="AuthSystem">
         SELECT <include refid="select_column_list"/> FROM auth_system
     </select>

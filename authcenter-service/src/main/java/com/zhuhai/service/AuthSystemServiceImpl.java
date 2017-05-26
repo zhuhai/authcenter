@@ -37,7 +37,7 @@ public class AuthSystemServiceImpl implements AuthSystemService {
 
     @Override
     public void updateAuthSystem(AuthSystem authSystem) {
-        authSystemMapper.upateAuthSystem(authSystem);
+        authSystemMapper.updateAuthSystem(authSystem);
     }
 
     @Override

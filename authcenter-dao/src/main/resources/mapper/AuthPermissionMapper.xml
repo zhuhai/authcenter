@@ -6,9 +6,9 @@
         id,`name`,code,`type`,pid,icon,url,system_id,description,orders,status,update_time,create_time
     </sql>
     <!--添加权限-->
-    <insert id="insertAuthPermission" parameterType="AuthPermission">
-      INSERT INTO auth_permission(id,`name`,`type`,pid,icon,url,system_id,description,orders,status)
-        VALUES (#{id},#{name},#{type},#{pid},#{icon},#{url},#{systemId},#{description},#{orders},#{status});
+    <insert id="insertAuthPermission" parameterType="AuthPermission" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+      INSERT INTO auth_permission(id,`name`,code,`type`,pid,icon,url,system_id,description,orders,status)
+        VALUES (#{id},#{name},#{code},#{type},#{pid},#{icon},#{url},#{systemId},#{description},#{orders},#{status});
     </insert>
     <!--修改权限-->
     <update id="updateAuthPermission" parameterType="AuthPermission">
@@ -35,20 +35,24 @@
         </foreach>
     </delete>
 
+    <!--根据权限id查找权限-->
     <select id="selectAuthPermissionById" resultType="AuthPermission">
         SELECT <include refid="select_column_list"/> FROM auth_permission WHERE id = #{id};
     </select>
 
+    <!--权限列表-->
     <select id="selectAuthPermissionList" resultType="AuthPermission">
         SELECT <include refid="select_column_list"/> FROM auth_permission
     </select>
 
+    <!--根据用户id查找该用户的权限列表-->
     <select id="selectAuthPermissionByUserId" resultType="java.lang.String">
         SELECT p.code FROM auth_permission p WHERE status = 1 AND p.id IN
           (SELECT rp.permission_id FROM auth_role_permission rp WHERE rp.role_id IN
             (SELECT ur.role_id FROM auth_user_role ur WHERE ur.user_id = #{userId}))
             ORDER BY p.orders ASC;
     </select>
+    <!--根据角色id查找该角色对应的权限列表-->
     <select id="selectAuthPermissionByRoleId" resultType="AuthPermission">
         SELECT <include refid="select_column_list"/> FROM auth_permission p WHERE p.id IN
         (SELECT rp.permission_id FROM auth_role_permission rp WHERE rp.role_id = #{roleId})

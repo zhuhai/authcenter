@@ -4,11 +4,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthUserService;
 import com.zhuhai.entity.AuthUser;
+import com.zhuhai.entity.AuthUserRole;
 import com.zhuhai.mapper.AuthUserMapper;
+import com.zhuhai.mapper.AuthUserRoleMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,9 +28,14 @@ public class AuthUserServiceImpl implements AuthUserService{
 
     @Resource
     private AuthUserMapper authUserMapper;
+    @Resource
+    private AuthUserRoleMapper authUserRoleMapper;
 
     @Override
     public int saveAuthUser(AuthUser authUser) {
+        if (authUser == null) {
+            return 0;
+        }
         return authUserMapper.insertAuthUser(authUser);
     }
 
@@ -65,6 +73,14 @@ public class AuthUserServiceImpl implements AuthUserService{
         PageHelper.startPage(pageNum, pageSize);
         List<AuthUser> authUserList = authUserMapper.selectAuthUserList();
         return new PageInfo<AuthUser>(authUserList);
+    }
+
+    @Override
+    public int saveAuthUserRoles(List<AuthUserRole> authUserRoles) {
+        if (CollectionUtils.isEmpty(authUserRoles)) {
+            return 0;
+        }
+        return authUserRoleMapper.saveAuthUserRoles(authUserRoles);
     }
 
 }
