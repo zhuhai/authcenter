@@ -4,8 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthUserService;
 import com.zhuhai.entity.AuthUser;
+import com.zhuhai.entity.AuthUserOrganization;
 import com.zhuhai.entity.AuthUserRole;
+import com.zhuhai.exception.ServiceException;
 import com.zhuhai.mapper.AuthUserMapper;
+import com.zhuhai.mapper.AuthUserOrganizationMapper;
 import com.zhuhai.mapper.AuthUserRoleMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +33,8 @@ public class AuthUserServiceImpl implements AuthUserService{
     private AuthUserMapper authUserMapper;
     @Resource
     private AuthUserRoleMapper authUserRoleMapper;
+    @Resource
+    private AuthUserOrganizationMapper authUserOrganizationMapper;
 
     @Override
     public int saveAuthUser(AuthUser authUser) {
@@ -83,11 +88,52 @@ public class AuthUserServiceImpl implements AuthUserService{
         return authUserRoleMapper.insertAuthUserRoles(authUserRoles);
     }
 
-    public void removeAuthUserRoles(Integer userId) {
+    @Override
+    public void removeAuthUserRolesByUserId(Integer userId) {
         if (userId == null) {
             return;
         }
         authUserRoleMapper.deleteAuthUserRolesByUserId(userId);
     }
 
+    @Override
+    public void removeAuthUserRolesByRoleId(Integer roleId) throws ServiceException {
+        if (roleId == null) {
+            return;
+        }
+        authUserRoleMapper.deleteAuthUserRolesByRoleId(roleId);
+    }
+
+    @Override
+    public int saveAuthUserOrganizations(List<AuthUserOrganization> authUserOrganizations) throws ServiceException {
+        if (CollectionUtils.isEmpty(authUserOrganizations)) {
+            return 0;
+        }
+
+        return authUserOrganizationMapper.insertAuthUserOrganizations(authUserOrganizations);
+    }
+
+    @Override
+    public void updateAuthUserOrganization(AuthUserOrganization authUserOrganization) throws ServiceException {
+        if (authUserOrganization == null) {
+            return;
+        }
+        authUserOrganizationMapper.updateAuthUserOrganization(authUserOrganization);
+    }
+
+    @Override
+    public void removeAuthUserOrganizationByUserId(Integer userId) throws ServiceException {
+        if (userId == null) {
+            return;
+        }
+        authUserOrganizationMapper.deleteAuthUserOrganizationsByUserId(userId);
+    }
+
+    @Override
+    public void removeAuthUserOrganizationByOrganizationId(Integer organizationId) throws ServiceException {
+        if (organizationId == null) {
+            return;
+        }
+        authUserOrganizationMapper.deleteAuthUserOrganizationsByOrganizationId(organizationId);
+    }
 }

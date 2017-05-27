@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhuhai.mapper.AuthUserOrganizationMapper">
+
+    <insert id="insertAuthUserOrganizations">
+        INSERT INTO auth_user_organization(user_id, organization_id) VALUES
+        <foreach collection="list" item="authUserOrganization" separator=",">
+            (#{authUserOrganization.userId},#{authUserOrganization.organizationId})
+        </foreach>
+    </insert>
+    <update id="updateAuthUserOrganization" parameterType="AuthUserOrganization">
+        UPDATE auth_user_organization SET organization_id = #{organizationId} WHERE user_id = #{userId};
+    </update>
+    <delete id="deleteAuthUserOrganizationsByUserId">
+        DELETE FROM auth_user_organization WHERE user_id = #{userId};
+    </delete>
+    <delete id="deleteAuthUserOrganizationsByOrganizationId">
+        DELETE FROM auth_user_organization WHERE organization_id = #{organizationId};
+    </delete>
+
+
+</mapper>

@@ -1,6 +1,7 @@
 package com.zhuhai;
 
 import com.zhuhai.api.AuthUserService;
+import com.zhuhai.entity.AuthUserOrganization;
 import com.zhuhai.exception.ServiceException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -87,6 +90,16 @@ public class AuthUserServiceTest {
         int count = authUserService.saveAuthUserRoles(authUserRoles);
         System.out.println(count);*/
 
+    }
+
+    @Test
+    public void saveAuthUserOrganization() {
+        List<AuthUserOrganization> authUserOrganizations = new ArrayList<>();
+        AuthUserOrganization authUserOrganization = new AuthUserOrganization();
+        authUserOrganization.setUserId(1);
+        authUserOrganization.setOrganizationId(2);
+        authUserOrganizations.add(authUserOrganization);
+        authUserService.saveAuthUserOrganizations(authUserOrganizations);
     }
 
 }

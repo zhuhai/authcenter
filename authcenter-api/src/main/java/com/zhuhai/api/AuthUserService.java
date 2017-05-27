@@ -2,6 +2,7 @@ package com.zhuhai.api;
 
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.entity.AuthUser;
+import com.zhuhai.entity.AuthUserOrganization;
 import com.zhuhai.entity.AuthUserRole;
 import com.zhuhai.exception.ServiceException;
 
@@ -68,5 +69,41 @@ public interface AuthUserService {
      * @param userId
      * @throws ServiceException
      */
-    void removeAuthUserRoles(Integer userId) throws ServiceException;
+    void removeAuthUserRolesByUserId(Integer userId) throws ServiceException;
+
+    /**
+     * 根据角色id删除用户角色
+     * @param roleId
+     * @throws ServiceException
+     */
+    void removeAuthUserRolesByRoleId(Integer roleId) throws ServiceException;
+
+    /**
+     * 添加用户组织
+     * @param authUserOrganizations
+     * @return
+     * @throws ServiceException
+     */
+    int saveAuthUserOrganizations(List<AuthUserOrganization> authUserOrganizations) throws ServiceException;
+
+    /**
+     * 修改用户组织
+     * @param authUserOrganization
+     * @throws ServiceException
+     */
+    void updateAuthUserOrganization(AuthUserOrganization authUserOrganization) throws ServiceException;
+
+    /**
+     * 根据用户id删除用户组织
+     * @param userId
+     * @throws ServiceException
+     */
+    void removeAuthUserOrganizationByUserId(Integer userId) throws ServiceException;
+
+    /**
+     * 根据组织id删除用户组织
+     * @param organizationId
+     * @throws ServiceException
+     */
+    void removeAuthUserOrganizationByOrganizationId(Integer organizationId) throws ServiceException;
 }

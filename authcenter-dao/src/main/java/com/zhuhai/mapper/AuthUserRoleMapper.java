@@ -14,5 +14,5 @@ public interface AuthUserRoleMapper {
 
     int insertAuthUserRoles(List<AuthUserRole> authUserRoles);
     void deleteAuthUserRolesByUserId(int userId);
-
+    void deleteAuthUserRolesByRoleId(Integer roleId);
 }
