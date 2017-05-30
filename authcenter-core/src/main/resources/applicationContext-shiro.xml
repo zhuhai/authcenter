@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <context:property-placeholder location="classpath*:auth-client.properties"/>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="${sso.server.url}"/>
+        <property name="successUrl" value="${auth.successUrl}"/>
+        <property name="unauthorizedUrl" value="${auth.unauthorizedUrl}"/>
+        <property name="filters">
+            <util:map>
+                <entry key="authc" value-ref="myAuthenticationFilter"/>
+            </util:map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /manage/index = user
+                /manage/** = authc
+                /** = anon
+            </value>
+        </property>
+    </bean>
+
+    <!--重写authc过滤器-->
+    <bean id="myAuthenticationFilter" class="com.zhuhai.shiro.filter.MyAuthenticationFilter"/>
+
+    <!--安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="authCenterRealm"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
+    </bean>
+    <bean id="authCenterRealm" class="com.zhuhai.shiro.realm.AuthCenterRealm"/>
+    <!--session管理器-->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="globalSessionTimeout" value="${auth.session.timeout}"/>
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionIdCookieEnabled" value="true"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        <property name="sessionValidationSchedulerEnabled" value="false"/>
+        <property name="sessionListeners">
+            <list>
+               <ref bean="sessionListener"/>
+            </list>
+        </property>
+    </bean>
+    <!--会话DAO-->
+    <bean id="sessionDAO" class="com.zhuhai.shiro.session.AuthSessionDao"/>
+    <!--session工厂-->
+    <bean id="sessionFactory" class="com.zhuhai.shiro.session.AuthSessionFactory"/>
+    <!--会话cookie模板-->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <!--不会暴露给客户端-->
+        <property name="httpOnly" value="true"/>
+        <!--设置cookie的过期时间，单位秒，默认-1表示浏览器关闭时过期cookie-->
+        <property name="maxAge" value="-1"/>
+        <!--cookie名称-->
+        <property name="name" value="${auth.session.id}"/>
+    </bean>
+    <!--会话监听器-->
+    <bean id="sessionListener" class="com.zhuhai.shiro.listener.AuthSessionListener"/>
+    <!--rememberMe管理器-->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <!-- rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）-->
+        <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+    <!--rememberMe cookie-->
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="${auth.remeberMe.timeout}"/>
+    </bean>
+    <!-- 开启Shiro Spring AOP权限注解@RequiresPermissions的支持 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+
+    <!--shiro生命周期-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+</beans>

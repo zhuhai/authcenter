@@ -14,9 +14,10 @@
         <module>authcenter-common</module>
         <module>authcenter-dao</module>
         <module>authcenter-api</module>
-        <module>authcenter-client</module>
         <module>authcenter-service</module>
+        <module>authcenter-core</module>
         <module>authcenter-server</module>
+
     </modules>
 
     <properties>
