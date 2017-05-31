@@ -15,7 +15,7 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 public class RedisUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(RedisUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisUtil.class);
 
     private static String IP = PropertiesUtil.getInstance("redis").getString("redis.ip");
     private static int PORT = PropertiesUtil.getInstance("redis").getInt("redis.port");
@@ -50,7 +50,7 @@ public class RedisUtil {
         }
     }
 
-    private static synchronized void initPool() {
+    private synchronized static void initPool() {
         if (jedisPool == null) {
             init();
         }
@@ -61,7 +61,7 @@ public class RedisUtil {
      *
      * @return
      */
-    public static synchronized Jedis getJedis() {
+    public synchronized static Jedis getJedis() {
         initPool();
         Jedis jedis = null;
         try {
@@ -74,142 +74,236 @@ public class RedisUtil {
         return jedis;
     }
 
+    public static void returnResouce(Jedis jedis) {
+        if (jedis != null) {
+            jedis.close();
+        }
+    }
+
 
     /**
      * 设置String值
+     *
      * @param key
      * @param value
      */
-    public static synchronized void set(String key, String value) {
+    public synchronized static void set(String key, String value) {
+        Jedis jedis = null;
         try {
             value = StringUtils.isBlank(value) ? "" : value;
-            Jedis jedis = getJedis();
+            jedis = getJedis();
             jedis.set(key, value);
-            jedis.close();
         } catch (Exception e) {
             logger.error("set key error!", e);
+        } finally {
+            returnResouce(jedis);
         }
     }
 
     /**
      * 设置byte值
+     *
      * @param key
      * @param value
      */
-    public static synchronized void set(byte[] key, byte[] value) {
+    public synchronized static void set(byte[] key, byte[] value) {
+        Jedis jedis = null;
         try {
-            Jedis jedis = getJedis();
+            jedis = getJedis();
             jedis.set(key, value);
-            jedis.close();
         } catch (Exception e) {
             logger.error("set key error!", e);
+        } finally {
+            returnResouce(jedis);
         }
     }
 
     /**
      * 设置有过期时间的String值
+     *
      * @param key
      * @param value
      * @param seconds
      */
-    public static synchronized void set(String key, String value, int seconds) {
+    public synchronized static void set(String key, String value, int seconds) {
+        Jedis jedis = null;
         try {
             value = StringUtils.isBlank(value) ? "" : value;
-            Jedis jedis = getJedis();
+            jedis = getJedis();
             jedis.setex(key, seconds, value);
-            jedis.close();
         } catch (Exception e) {
             logger.error("set keyex error!", e);
+        } finally {
+            returnResouce(jedis);
         }
     }
 
     /**
      * 设置有过期时间的byte值
+     *
      * @param key
      * @param value
      * @param seconds
      */
-    public static synchronized void set(byte[] key, byte[] value, int seconds) {
+    public synchronized static void set(byte[] key, byte[] value, int seconds) {
+        Jedis jedis = null;
         try {
-            Jedis jedis = getJedis();
+            jedis = getJedis();
             jedis.setex(key, seconds, value);
-            jedis.close();
         } catch (Exception e) {
             logger.error("set keyex error!", e);
+        } finally {
+            returnResouce(jedis);
         }
 
     }
 
     /**
      * 获取String值
+     *
      * @param key
      * @return
      */
     public static String get(String key) {
         String value = null;
+        Jedis jedis = null;
         try {
-            Jedis jedis = getJedis();
+            jedis = getJedis();
             if (jedis == null) {
                 return null;
             }
             value = jedis.get(key);
-            jedis.close();
         } catch (Exception e) {
             logger.error("get value error!", e);
+        } finally {
+            returnResouce(jedis);
         }
         return value;
     }
 
     /**
      * 获取byte值
+     *
      * @param key
      * @return
      */
     public static byte[] get(byte[] key) {
         byte[] value = null;
+        Jedis jedis = null;
         try {
-            Jedis jedis = getJedis();
+            jedis = getJedis();
             if (jedis == null) {
                 return null;
             }
             value = jedis.get(key);
-            jedis.close();
         } catch (Exception e) {
             logger.error("get value error!", e);
+        } finally {
+            returnResouce(jedis);
         }
         return value;
     }
 
     /**
      * 删除String值
+     *
      * @param key
      */
-    public static synchronized void remove(String key) {
+    public synchronized static void remove(String key) {
+        Jedis jedis = null;
         try {
-            Jedis jedis = getJedis();
+            jedis = getJedis();
             jedis.del(key);
-            jedis.close();
         } catch (Exception e) {
             logger.error("delete key error!", e);
+        } finally {
+            returnResouce(jedis);
         }
     }
 
     /**
      * 删除byte[]值
+     *
      * @param key
      */
-    public static synchronized void remove(byte[] key) {
+    public synchronized static void remove(byte[] key) {
+        Jedis jedis = null;
         try {
-            Jedis jedis = getJedis();
+            jedis = getJedis();
             jedis.del(key);
-            jedis.close();
         } catch (Exception e) {
             logger.error("delete key error!", e);
+        } finally {
+            returnResouce(jedis);
         }
     }
 
+    /**
+     * 设置list
+     * @param key
+     * @param values
+     */
+    public synchronized static void lpush(String key, String... values) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            jedis.lpush(key, values);
+        } catch (Exception e) {
+            logger.error("lpush error!", e);
+        } finally {
+            returnResouce(jedis);
+        }
+    }
 
+    /**
+     * 删除list中的值
+     * @param key
+     * @param count
+     * @param value
+     */
+    public synchronized static void lrem(String key, long count, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            jedis.lrem(key, count,value);
+        } catch (Exception e) {
+            logger.error("lrem error!", e);
+        } finally {
+            returnResouce(jedis);
+        }
+    }
 
+    /**
+     * 设置set值
+     * @param key
+     * @param members
+     */
+    public synchronized static void sadd(String key, String... members) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            jedis.sadd(key, members);
+        } catch (Exception e) {
+            logger.error("sadd error!", e);
+        } finally {
+            returnResouce(jedis);
+        }
+    }
 
-
+    /**
+     * 删除set的值
+     * @param key
+     * @param members
+     */
+    public synchronized static void srem(String key, String... members) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            jedis.srem(key, members);
+        } catch (Exception e) {
+            logger.error("srem error!", e);
+        } finally {
+            returnResouce(jedis);
+        }
+    }
 }
