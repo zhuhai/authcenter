@@ -7,6 +7,9 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA
  * User: hai
@@ -240,6 +243,7 @@ public class RedisUtil {
 
     /**
      * 设置list
+     *
      * @param key
      * @param values
      */
@@ -256,7 +260,43 @@ public class RedisUtil {
     }
 
     /**
+     * 获取list长度
+     *
+     * @param key
+     * @return
+     */
+    public synchronized static long llen(String key) {
+        Jedis jedis = null;
+        long len = 0L;
+        try {
+            jedis = getJedis();
+            len = jedis.llen(key);
+        } catch (Exception e) {
+            logger.error("llen error!", e);
+        } finally {
+            returnResouce(jedis);
+        }
+        return len;
+    }
+
+
+    public synchronized static List<String> lrange(String key, long offset, long limit) {
+        Jedis jedis = null;
+        List<String> list = new ArrayList<>();
+        try {
+            jedis = getJedis();
+            list = jedis.lrange(key, offset, (offset + limit - 1));
+        } catch (Exception e) {
+            logger.error("lrange error!", e);
+        } finally {
+            returnResouce(jedis);
+        }
+        return list;
+    }
+
+    /**
      * 删除list中的值
+     *
      * @param key
      * @param count
      * @param value
@@ -265,7 +305,7 @@ public class RedisUtil {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            jedis.lrem(key, count,value);
+            jedis.lrem(key, count, value);
         } catch (Exception e) {
             logger.error("lrem error!", e);
         } finally {
@@ -275,6 +315,7 @@ public class RedisUtil {
 
     /**
      * 设置set值
+     *
      * @param key
      * @param members
      */
@@ -292,6 +333,7 @@ public class RedisUtil {
 
     /**
      * 删除set的值
+     *
      * @param key
      * @param members
      */
@@ -302,6 +344,19 @@ public class RedisUtil {
             jedis.srem(key, members);
         } catch (Exception e) {
             logger.error("srem error!", e);
+        } finally {
+            returnResouce(jedis);
+        }
+    }
+
+
+    public synchronized static void expire(String key, int seconds) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            jedis.expire(key, seconds);
+        } catch (Exception e) {
+            logger.error("expire error!", e);
         } finally {
             returnResouce(jedis);
         }

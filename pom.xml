@@ -45,6 +45,7 @@
         <jackson.version>2.8.1</jackson.version>
         <aspectj.version>1.8.10</aspectj.version>
         <freemarker.version>2.3.23</freemarker.version>
+        <httpclient.version>4.5.3</httpclient.version>
     </properties>
 
 
@@ -275,6 +276,13 @@
                 <artifactId>freemarker</artifactId>
                 <version>${freemarker.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+
 
 
 

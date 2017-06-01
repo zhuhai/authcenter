@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -39,7 +43,7 @@ public class AuthSessionDao extends CachingSessionDAO {
     protected Session doReadSession(Serializable sessionId) {
         String session = RedisUtil.get(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId);
         logger.info("doReadSession ====> sessionId={}", sessionId);
-        return ProtostuffUtil.derialize(Base64.decode(session), Session.class);
+        return ProtostuffUtil.derialize(Base64.decode(session), AuthSession.class);
     }
 
 
@@ -93,6 +97,67 @@ public class AuthSessionDao extends CachingSessionDAO {
         //删除session
         RedisUtil.remove(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId);
         logger.info("doDelete ====> sessionId={}", sessionId);
+    }
+
+
+    /**
+     * 获取会话列表
+     *
+     * @param offset
+     * @param limit
+     * @return
+     */
+    public Map getActiveSessions(int offset, int limit) {
+        Map map = new HashMap();
+        long total = RedisUtil.llen(AuthConstant.AUTHCENTER_SERVER_SESSSION_IDS);
+        List<Session> rows = new ArrayList<>();
+        List<String> sessionIds = RedisUtil.lrange(AuthConstant.AUTHCENTER_SERVER_SESSSION_IDS, offset, limit);
+        for (String sessionId : sessionIds) {
+            String session = RedisUtil.get(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId);
+            //过滤掉过期的session
+            if (session == null) {
+                RedisUtil.lrem(AuthConstant.AUTHCENTER_SERVER_SESSSION_IDS, 1, sessionId);
+                total = total - 1;
+                continue;
+            }
+            rows.add(ProtostuffUtil.derialize(Base64.decode(session), AuthSession.class));
+        }
+        map.put("total", total);
+        map.put("rows", rows);
+        return map;
+    }
+
+    /**
+     * 强制退出
+     * @param ids
+     * @return
+     */
+    public int forceLogout(String ids) {
+        String[] sessionIds = ids.split(",");
+        //会话增加强制退出属性标识，当此会话访问系统时，判断有此属性，退出登录
+        for (String sessionId : sessionIds) {
+            String session = RedisUtil.get(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId);
+            AuthSession authSession = ProtostuffUtil.derialize(Base64.decode(session), AuthSession.class);
+            authSession.setOnlineStatus(AuthSession.OnlineStatus.force_logout);
+            authSession.setAttribute("FORCE_LOGOUT", "FORCE_LOGOUT");
+            RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId, Base64.encodeToString(ProtostuffUtil.serialize(authSession)), (int) (authSession.getTimeout() / 1000));
+        }
+        return sessionIds.length;
+    }
+
+
+    /**
+     * 更改在线状态
+     * @param sessionId
+     * @param onlineStatus
+     */
+    public void updateStatus(Serializable sessionId, AuthSession.OnlineStatus onlineStatus) {
+        AuthSession authSession = (AuthSession) doReadSession(sessionId);
+        if (authSession == null) {
+            return;
+        }
+        authSession.setOnlineStatus(onlineStatus);
+        RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + authSession.getId(), Base64.encodeToString(ProtostuffUtil.serialize(authSession)), (int) (authSession.getTimeout() / 1000));
     }
 
 
