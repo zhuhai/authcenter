@@ -1,6 +1,8 @@
 package com.zhuhai.shiro.filter;
 
 import com.zhuhai.common.constant.AuthConstant;
+import com.zhuhai.common.constant.AuthResult;
+import com.zhuhai.common.util.JsonMapper;
 import com.zhuhai.common.util.PropertiesUtil;
 import com.zhuhai.common.util.RedisUtil;
 import com.zhuhai.shiro.session.AuthSessionDao;
@@ -15,6 +17,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.AuthenticationFilter;
@@ -145,9 +149,28 @@ public class MyAuthenticationFilter extends AuthenticationFilter {
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     HttpEntity httpEntity = httpResponse.getEntity();
+                    String result = EntityUtils.toString(httpEntity);
+                    AuthResult authResult = JsonMapper.nonEmptyMapper().fromJson(result, AuthResult.class);
+                    if (1 == authResult.getCode() && code.equals(authResult.getData())) {
+                        //code校验成功，创建局部会话
+                        RedisUtil.set(AuthConstant.AUTHCENTER_CLIENT_SESSION_ID + "_" + sessionId, code, timeout);
+                        RedisUtil.sadd(AuthConstant.AUTHCENTER_CLIENT_SESSION_IDS + "_" + code, sessionId, timeout);
+                        //去掉url中的auth_code和auth_username参数
+                        String backUrl = RequestParameterUtil.getParameterWithOutCode(WebUtils.toHttp(request));
+                        //client无密认证
+                        try {
+                            String userName = request.getParameter("auth_username");
+                            subject.login(new UsernamePasswordToken(userName,""));
+                            WebUtils.toHttp(response).sendRedirect(backUrl);
+                        } catch (IOException e) {
+                            logger.error("已拿到code，移除参数跳转失败");
+                        }
+                        return true;
+                    }
+
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("验证code失败", e);
             }
 
 

@@ -331,6 +331,20 @@ public class RedisUtil {
         }
     }
 
+    public synchronized static void sadd(String key, String value, int secondes) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            jedis.sadd(key, value);
+            jedis.expire(key, secondes);
+        } catch (Exception e) {
+            logger.error("sadd error!", e);
+        } finally {
+            returnResouce(jedis);
+        }
+
+    }
+
     /**
      * 删除set的值
      *
