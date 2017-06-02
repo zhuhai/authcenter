@@ -14,9 +14,13 @@ public class AuthSystem implements Serializable {
     private static final long serialVersionUID = -8219740074315575051L;
 
     private Integer id;
+    /**系统名称**/
     private String name;
+    /**系统标题**/
     private String title;
+    /**系统描述**/
     private String description;
+    /**系统状态（0：禁用 1：正常）**/
     private Byte status;
     private Date updateTime;
     private Date createTime;

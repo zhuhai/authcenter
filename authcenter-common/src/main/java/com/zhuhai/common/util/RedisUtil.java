@@ -32,7 +32,7 @@ public class RedisUtil {
     private static int MAX_WAIT = PropertiesUtil.getInstance("redis").getInt("redis.max_wait");
     // 在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；
     private static boolean TEST_ON_BORROW = PropertiesUtil.getInstance("redis").getBoolean("redis.test_on_borrow");
-    private static int TIME_OUT = PropertiesUtil.getInstance("redis").getInt("redis.timeout");
+    private static int TIME_OUT = PropertiesUtil.getInstance("redis").getInt("redis.time_out");
 
     private static JedisPool jedisPool;
 
@@ -47,7 +47,7 @@ public class RedisUtil {
             config.setMaxIdle(MAX_IDLE);
             config.setMaxWaitMillis(MAX_WAIT);
             config.setTestOnBorrow(TEST_ON_BORROW);
-            jedisPool = new JedisPool(config, IP, PORT, TIME_OUT, PASSWORD);
+            jedisPool = new JedisPool(config, IP, PORT, TIME_OUT);
         } catch (Exception e) {
             logger.error("get jedis pool error!", e);
         }

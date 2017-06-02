@@ -42,7 +42,7 @@ public class ProtostuffUtil {
      * @return
      */
     public static <T> byte[] serialize(T obj) {
-        Class<T> clazz = (Class<T>) obj;
+        Class<T> clazz = (Class<T>) obj.getClass();
         LinkedBuffer linkedBuffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         try {
             Schema<T> schema = getSchema(clazz);

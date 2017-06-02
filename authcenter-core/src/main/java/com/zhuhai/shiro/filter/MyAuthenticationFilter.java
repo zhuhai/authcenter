@@ -87,7 +87,7 @@ public class MyAuthenticationFilter extends AuthenticationFilter {
         StringBuffer sso_server_url = new StringBuffer(PropertiesUtil.getInstance("auth-client").getString("sso.server.url"));
         String authType = PropertiesUtil.getInstance("auth-client").getString("auth.type");
         if ("server".equals(authType)) {
-            WebUtils.toHttp(response).sendRedirect(sso_server_url.append("/sso/index").toString());
+            WebUtils.toHttp(response).sendRedirect(sso_server_url.append("/sso/login").toString());
             return false;
         }
         sso_server_url.append("/sso/index").append("?").append("appid").append("=").append(PropertiesUtil.getInstance("auth-client").getString("appId"));
@@ -162,10 +162,13 @@ public class MyAuthenticationFilter extends AuthenticationFilter {
                             String userName = request.getParameter("auth_username");
                             subject.login(new UsernamePasswordToken(userName,""));
                             WebUtils.toHttp(response).sendRedirect(backUrl);
+                            return true;
                         } catch (IOException e) {
                             logger.error("已拿到code，移除参数跳转失败");
                         }
-                        return true;
+
+                    }else {
+                        logger.warn("code校验不成功,code={}", authResult.getData());
                     }
 
                 }

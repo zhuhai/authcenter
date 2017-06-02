@@ -37,6 +37,8 @@ public interface AuthSystemService {
      */
     AuthSystem getAuthSystem(Integer id) throws ServiceException;
 
+    AuthSystem getAuthSystemByName(String name) throws ServiceException;
+
     /**
      * 分页获取系统列表
      * @param pageNum

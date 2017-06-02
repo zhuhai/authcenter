@@ -25,20 +25,20 @@ public class AuthUserController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createUser() {
-        return "userCreate";
+        return "manage/userCreate";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createUser(AuthUser user) {
         authUserService.saveAuthUser(user);
-        return "index";
+        return "manage/index";
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public String getAuthUserList(Model model) {
         PageInfo<AuthUser> pageInfo = authUserService.listAuthUser(1,10);
         model.addAttribute("authUserList",pageInfo.getList());
-        return "userList";
+        return "manage/userList";
     }
 
 }

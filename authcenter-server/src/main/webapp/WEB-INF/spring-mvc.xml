@@ -20,7 +20,7 @@
 
     <!--静态资源-->
     <mvc:resources mapping="/static/**" location="/static/"/>
-    <mvc:view-controller path="/" view-name="index"/>
+    <mvc:view-controller path="/" view-name="manage/index"/>
     <!--视图解析器-->
     <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>

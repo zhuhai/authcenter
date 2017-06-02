@@ -20,16 +20,18 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
+                /static/** = anon
+                /sso/** = anon
                 /manage/index = user
-                /manage/** = authc
-                /** = anon
+                /manage/** = authSessionForceLogout,authc
+                /** = authc
             </value>
         </property>
     </bean>
 
     <!--重写authc过滤器-->
     <bean id="myAuthenticationFilter" class="com.zhuhai.shiro.filter.MyAuthenticationFilter"/>
-
+    <bean id="authSessionForceLogout" class="com.zhuhai.shiro.filter.AuthSessionForceLogoutFilter"/>
     <!--安全管理器-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="authCenterRealm"/>

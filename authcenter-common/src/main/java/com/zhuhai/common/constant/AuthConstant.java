@@ -14,7 +14,7 @@ public class AuthConstant {
     //全局会话key
     public static final String AUTHCENTER_SERVER_SESSION_ID = "authcenter-server-session-id";
     //全局会话key列表
-    public static final String AUTHCENTER_SERVER_SESSSION_IDS = "authcenter-server-session-ids";
+    public static final String AUTHCENTER_SERVER_SESSION_IDS = "authcenter-server-session-ids";
     //code key
     public static final String AUTHCENTER_SERVER_CODE = "authcenter-server-code";
     //局部会话key

@@ -1,9 +1,8 @@
 package com.zhuhai.shiro.session;
 
 import com.zhuhai.common.constant.AuthConstant;
-import com.zhuhai.common.util.ProtostuffUtil;
 import com.zhuhai.common.util.RedisUtil;
-import org.apache.shiro.codec.Base64;
+import com.zhuhai.util.SerializableUtil;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.ValidatingSession;
 import org.apache.shiro.session.mgt.eis.CachingSessionDAO;
@@ -34,16 +33,16 @@ public class AuthSessionDao extends CachingSessionDAO {
     protected Serializable doCreate(Session session) {
         Serializable sessionId = generateSessionId(session);
         assignSessionId(session, sessionId);
-        RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId, Base64.encodeToString(ProtostuffUtil.serialize(session)), (int) (session.getTimeout() / 1000));
-        logger.info("doCreate ====> sessionId={}", sessionId);
+        RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId, SerializableUtil.serialize(session), (int) (session.getTimeout() / 1000));
+        logger.debug("doCreate ====> sessionId={}", sessionId);
         return sessionId;
     }
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
         String session = RedisUtil.get(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId);
-        logger.info("doReadSession ====> sessionId={}", sessionId);
-        return ProtostuffUtil.derialize(Base64.decode(session), AuthSession.class);
+        logger.debug("doReadSession ====> sessionId={}", sessionId);
+        return SerializableUtil.deserialize(session);
     }
 
 
@@ -60,8 +59,8 @@ public class AuthSessionDao extends CachingSessionDAO {
             authSession.setOnlineStatus(cacheAuthSession.getOnlineStatus());
             authSession.setAttribute("FORCE_LOGOUT", cacheAuthSession.getAttribute("FORCE_LOGOUT"));
         }
-        RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + session.getId(), Base64.encodeToString(ProtostuffUtil.serialize(session)), (int) (session.getTimeout() / 1000));
-        logger.info("doUpdate ====> sessionId={}", session.getId());
+        RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + session.getId(), SerializableUtil.serialize(session), (int) (session.getTimeout() / 1000));
+        logger.debug("doUpdate ====> sessionId={}", session.getId());
     }
 
     @Override
@@ -89,14 +88,14 @@ public class AuthSessionDao extends CachingSessionDAO {
                 jedis.del(AuthConstant.AUTHCENTER_CLIENT_SESSION_ID + "_" + cacheSessionId);
                 jedis.srem(AuthConstant.AUTHCENTER_CLIENT_SESSION_IDS + "_" + code, cacheSessionId);
             }
-            logger.info("当前code={}，对应的注册系统个数：{}个", code, jedis.scard(AuthConstant.AUTHCENTER_CLIENT_SESSION_IDS + "_" + code));
+            logger.debug("当前code={}，对应的注册系统个数：{}个", code, jedis.scard(AuthConstant.AUTHCENTER_CLIENT_SESSION_IDS + "_" + code));
             jedis.close();
-            RedisUtil.lrem(AuthConstant.AUTHCENTER_SERVER_SESSSION_IDS, 1, sessionId);
+            RedisUtil.lrem(AuthConstant.AUTHCENTER_SERVER_SESSION_IDS, 1, sessionId);
 
         }
         //删除session
         RedisUtil.remove(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId);
-        logger.info("doDelete ====> sessionId={}", sessionId);
+        logger.debug("doDelete ====> sessionId={}", sessionId);
     }
 
 
@@ -109,18 +108,18 @@ public class AuthSessionDao extends CachingSessionDAO {
      */
     public Map getActiveSessions(int offset, int limit) {
         Map map = new HashMap();
-        long total = RedisUtil.llen(AuthConstant.AUTHCENTER_SERVER_SESSSION_IDS);
+        long total = RedisUtil.llen(AuthConstant.AUTHCENTER_SERVER_SESSION_IDS);
         List<Session> rows = new ArrayList<>();
-        List<String> sessionIds = RedisUtil.lrange(AuthConstant.AUTHCENTER_SERVER_SESSSION_IDS, offset, limit);
+        List<String> sessionIds = RedisUtil.lrange(AuthConstant.AUTHCENTER_SERVER_SESSION_IDS, offset, limit);
         for (String sessionId : sessionIds) {
             String session = RedisUtil.get(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId);
             //过滤掉过期的session
             if (session == null) {
-                RedisUtil.lrem(AuthConstant.AUTHCENTER_SERVER_SESSSION_IDS, 1, sessionId);
+                RedisUtil.lrem(AuthConstant.AUTHCENTER_SERVER_SESSION_IDS, 1, sessionId);
                 total = total - 1;
                 continue;
             }
-            rows.add(ProtostuffUtil.derialize(Base64.decode(session), AuthSession.class));
+            rows.add(SerializableUtil.deserialize(session));
         }
         map.put("total", total);
         map.put("rows", rows);
@@ -137,10 +136,10 @@ public class AuthSessionDao extends CachingSessionDAO {
         //会话增加强制退出属性标识，当此会话访问系统时，判断有此属性，退出登录
         for (String sessionId : sessionIds) {
             String session = RedisUtil.get(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId);
-            AuthSession authSession = ProtostuffUtil.derialize(Base64.decode(session), AuthSession.class);
+            AuthSession authSession = (AuthSession) SerializableUtil.deserialize(session);
             authSession.setOnlineStatus(AuthSession.OnlineStatus.force_logout);
             authSession.setAttribute("FORCE_LOGOUT", "FORCE_LOGOUT");
-            RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId, Base64.encodeToString(ProtostuffUtil.serialize(authSession)), (int) (authSession.getTimeout() / 1000));
+            RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + sessionId, SerializableUtil.serialize(authSession), (int) (authSession.getTimeout() / 1000));
         }
         return sessionIds.length;
     }
@@ -157,7 +156,7 @@ public class AuthSessionDao extends CachingSessionDAO {
             return;
         }
         authSession.setOnlineStatus(onlineStatus);
-        RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + authSession.getId(), Base64.encodeToString(ProtostuffUtil.serialize(authSession)), (int) (authSession.getTimeout() / 1000));
+        RedisUtil.set(AuthConstant.AUTHCENTER_SHIRO_SESSION_ID + "_" + authSession.getId(), SerializableUtil.serialize(authSession), (int) (authSession.getTimeout() / 1000));
     }
 
 

@@ -43,6 +43,7 @@ public class AuthCenterRealm extends AuthorizingRealm {
 
     /**
      * 授权
+     *
      * @param principalCollection
      * @return
      */
@@ -73,6 +74,7 @@ public class AuthCenterRealm extends AuthorizingRealm {
 
     /**
      * 认证
+     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -96,9 +98,9 @@ public class AuthCenterRealm extends AuthorizingRealm {
             throw new LockedAccountException();
         }
         //密码不正确
-        if (!authUser.getPassword().equals(DigestUtils.sha1Hex(String.valueOf(token.getPassword())+authUser.getSalt()))) {
+        if (!authUser.getPassword().equals(DigestUtils.sha1Hex(String.valueOf(token.getPassword()) + authUser.getSalt()))) {
             throw new IncorrectCredentialsException();
         }
-        return new SimpleAuthenticationInfo(authUser, authUser.getPassword(), getName());
+        return new SimpleAuthenticationInfo(authUser, token.getPassword(), getName());
     }
 }

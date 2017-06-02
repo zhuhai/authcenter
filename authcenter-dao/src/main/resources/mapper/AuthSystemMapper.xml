@@ -8,7 +8,7 @@
 
     <!--添加系统-->
     <insert id="insertAuthSystem" parameterType="AuthSystem" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into auth_system (id,`name`,title,description,status) values (#{id},#{name},#{title},#{description},#{status});
+        insert ignore into auth_system (id,`name`,title,description,status) values (#{id},#{name},#{title},#{description},#{status});
     </insert>
 
     <!--修改系统-->
@@ -39,6 +39,10 @@
     <!--系统列表-->
     <select id="selectAuthSystemList" resultType="AuthSystem">
         SELECT <include refid="select_column_list"/> FROM auth_system
+    </select>
+    <!--根据系统名称查找系统-->
+    <select id="selectAuthSystemByName" resultType="AuthSystem">
+        SELECT <include refid="select_column_list"/> FROM auth_system WHERE `name` = #{name}
     </select>
 
 

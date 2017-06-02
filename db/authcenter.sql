@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50611
 File Encoding         : 65001
 
-Date: 2017-05-26 15:42:41
+Date: 2017-06-02 18:19:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -132,7 +132,8 @@ CREATE TABLE `auth_system` (
   `status` tinyint(1) NOT NULL,
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_name` (`name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -158,11 +159,13 @@ CREATE TABLE `auth_user` (
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_user
 -- ----------------------------
+INSERT INTO `auth_user` VALUES ('7', 'admin', '1c81554a150472f4ca438bdd1c5cc67223bcf3e5', 'abcdefg', null, null, null, null, null, '1', '2017-05-27 17:06:21', '2017-06-02 17:22:23');
+INSERT INTO `auth_user` VALUES ('8', 'tom', 'sdf', 'fssfds', null, null, null, null, null, '1', '2017-05-27 17:16:42', '2017-05-27 17:16:42');
 
 -- ----------------------------
 -- Table structure for auth_user_organization
@@ -177,6 +180,7 @@ CREATE TABLE `auth_user_organization` (
 -- ----------------------------
 -- Records of auth_user_organization
 -- ----------------------------
+INSERT INTO `auth_user_organization` VALUES ('1', '2');
 
 -- ----------------------------
 -- Table structure for auth_user_role

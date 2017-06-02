@@ -17,4 +17,5 @@ public interface AuthSystemMapper {
     void deleteAuthSystem(int[] ids);
     AuthSystem selectAuthSystemById(int id);
     List<AuthSystem> selectAuthSystemList();
+    AuthSystem selectAuthSystemByName(String name);
 }

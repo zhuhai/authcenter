@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -67,7 +66,6 @@ public class AuthUserServiceTest {
     }
 
     @Test
-    @Transactional
     public void saveAuthUserRole() throws ServiceException {
 
         /*AuthUser user = new AuthUser();
@@ -99,7 +97,7 @@ public class AuthUserServiceTest {
         authUserOrganization.setUserId(1);
         authUserOrganization.setOrganizationId(2);
         authUserOrganizations.add(authUserOrganization);
-        authUserService.saveAuthUserOrganizations(authUserOrganizations);
+        //authUserService.saveAuthUserOrganizations(authUserOrganizations);
     }
 
 }

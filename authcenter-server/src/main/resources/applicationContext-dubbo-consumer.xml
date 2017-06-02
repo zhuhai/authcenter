@@ -12,5 +12,8 @@
     <dubbo:reference interface="com.zhuhai.api.AuthUserService" id="authUserService"/>
     <dubbo:reference interface="com.zhuhai.api.AuthRoleService" id="authRoleService"/>
     <dubbo:reference interface="com.zhuhai.api.AuthPermissionService" id="authPermissionService"/>
+    <dubbo:reference interface="com.zhuhai.api.AuthOrganizationService" id="authOrganizationService"/>
+    <dubbo:reference interface="com.zhuhai.api.AuthSystemService" id="authSystemService"/>
+    <dubbo:reference interface="com.zhuhai.api.AuthLogService" id="authLogService"/>
 
 </beans>

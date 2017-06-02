@@ -57,6 +57,14 @@ public class AuthSystemServiceImpl implements AuthSystemService {
     }
 
     @Override
+    public AuthSystem getAuthSystemByName(String name) {
+        if (name == null) {
+            return null;
+        }
+        return authSystemMapper.selectAuthSystemByName(name);
+    }
+
+    @Override
     public PageInfo<AuthSystem> listAuthSystem(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<AuthSystem> authSystemList = authSystemMapper.selectAuthSystemList();
