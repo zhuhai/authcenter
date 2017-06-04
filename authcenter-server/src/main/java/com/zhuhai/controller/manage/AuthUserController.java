@@ -1,4 +1,4 @@
-package com.zhuhai.controller;
+package com.zhuhai.controller.manage;
 
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthUserService;
