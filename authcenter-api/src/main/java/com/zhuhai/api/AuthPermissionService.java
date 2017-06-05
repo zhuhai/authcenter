@@ -60,4 +60,14 @@ public interface AuthPermissionService {
      * @return
      */
     List<AuthPermission> listAuthPermissionByRoleId(Integer roleId) throws ServiceException;
+
+    /**
+     * 根据用户id和系统id获取用户权限，systemId为null查出用户所有系统的权限
+     * @param userId
+     * @param systemId
+     * @return
+     * @throws ServiceException
+     */
+    List<AuthPermission> listAuthPermissionsByUserId(Integer userId, Integer systemId) throws ServiceException;
+
 }

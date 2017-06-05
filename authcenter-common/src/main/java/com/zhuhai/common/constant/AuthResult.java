@@ -12,6 +12,22 @@ public class AuthResult {
     private String message;
     private Object data;
 
+    public AuthResult(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    public AuthResult(int code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
+    public AuthResult(AuthResultConstant authResultConstant) {
+        this.code = authResultConstant.getCode();
+        this.message = authResultConstant.getMessage();
+    }
+
     public int getCode() {
         return code;
     }

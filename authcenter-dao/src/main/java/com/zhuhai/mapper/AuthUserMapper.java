@@ -14,7 +14,7 @@ public interface AuthUserMapper {
     int insertAuthUser(AuthUser authUser);
     void updateAuthUser(AuthUser authUser);
     void deleteAuthUser(int[] ids);
-    AuthUser selectAuthUserById(int id);
+    AuthUser selectAuthUserById(Integer id);
     AuthUser selectAuthUserByName(String userName);
     List<AuthUser> selectAuthUserList();
 

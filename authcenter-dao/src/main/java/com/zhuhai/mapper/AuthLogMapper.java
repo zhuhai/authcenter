@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface AuthLogMapper {
     int insertAuthLog(AuthLog authLog);
-    AuthLog selectAuthLogById(int id);
+    AuthLog selectAuthLogById(Integer id);
     List<AuthLog> selectAuthLogList();
 }

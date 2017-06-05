@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthPermissionService;
 import com.zhuhai.entity.AuthPermission;
 import com.zhuhai.entity.AuthUser;
+import com.zhuhai.exception.ServiceException;
 import com.zhuhai.mapper.AuthPermissionMapper;
 import com.zhuhai.mapper.AuthUserMapper;
 import org.apache.commons.lang3.ArrayUtils;
@@ -83,5 +84,15 @@ public class AuthPermissionServiceImpl implements AuthPermissionService {
             return null;
         }
         return authPermissionMapper.selectAuthPermissionByRoleId(roleId);
+    }
+
+    @Override
+    public List<AuthPermission> listAuthPermissionsByUserId(Integer userId, Integer systemId) throws ServiceException {
+
+        if (userId == null) {
+            return null;
+        }
+
+        return authPermissionMapper.selectAuthPermissionsByUserId(userId, systemId);
     }
 }

@@ -70,10 +70,8 @@ public class AuthSessionDao extends CachingSessionDAO {
         if ("client".equals(authType)) {
             //删除局部会话和同一code注册的局部会话
             String code = RedisUtil.get(AuthConstant.AUTHCENTER_CLIENT_SESSION_ID + "_" + sessionId);
-            Jedis jedis = RedisUtil.getJedis();
             RedisUtil.remove(AuthConstant.AUTHCENTER_CLIENT_SESSION_ID + "_" + sessionId);
             RedisUtil.srem(AuthConstant.AUTHCENTER_CLIENT_SESSION_IDS + "_" + code, sessionId);
-            jedis.close();
         }
         if ("server".equals(authType)) {
             //全局会话code

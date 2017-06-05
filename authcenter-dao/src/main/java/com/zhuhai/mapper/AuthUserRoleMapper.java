@@ -13,6 +13,6 @@ import java.util.List;
 public interface AuthUserRoleMapper {
 
     int insertAuthUserRoles(List<AuthUserRole> authUserRoles);
-    void deleteAuthUserRolesByUserId(int userId);
+    void deleteAuthUserRolesByUserId(Integer userId);
     void deleteAuthUserRolesByRoleId(Integer roleId);
 }

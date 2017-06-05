@@ -15,7 +15,7 @@ public interface AuthRoleMapper {
     int insertAuthRole(AuthRole authRole);
     void updateAuthRole(AuthRole authRole);
     void deleteAuthRole(int[] ids);
-    AuthRole selectAuthRoleById(int id);
+    AuthRole selectAuthRoleById(Integer id);
     List<AuthRole> selectAuthRoleList();
-    List<AuthRole> selectAuthRoleListByUserId(int userId);
+    List<AuthRole> selectAuthRoleListByUserId(Integer userId);
 }

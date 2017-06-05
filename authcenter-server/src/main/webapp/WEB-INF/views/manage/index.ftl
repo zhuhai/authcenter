@@ -1,13 +1,20 @@
-<!doctype html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title></title>
 </head>
 <body>
-    <a href="/authUser/create">添加用户</a><br>
-    <a href="/authUser/list">查看用户列表</a>
+<div class="alert alert-block alert-success">
+    <button type="button" class="close" data-dismiss="alert">
+        <i class="ace-icon fa fa-times"></i>
+    </button>
+    <i class="ace-icon fa fa-check green"></i>
+    欢迎使用后台管理系统
+</div>
+<script type="text/javascript">
+    var scripts = [null,null];
+    ace.load_ajax_scripts(scripts, function() {
+        //inline scripts related to this page
+    });
+</script>
 </body>
 </html>

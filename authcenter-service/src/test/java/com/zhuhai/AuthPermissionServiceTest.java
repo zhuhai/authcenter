@@ -1,12 +1,14 @@
 package com.zhuhai;
 
 import com.zhuhai.api.AuthPermissionService;
+import com.zhuhai.entity.AuthPermission;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +32,13 @@ public class AuthPermissionServiceTest {
             System.out.println(permission);
         }
         Assert.assertFalse(CollectionUtils.isEmpty(permissions));
-*/
+
+        */
+        /*List<AuthPermission> permissionList = authPermissionService.listAuthPermissionsByUserId(1, null);
+        for (AuthPermission authPermission : permissionList) {
+            System.out.println("----------------------");
+            System.out.println(authPermission.toString());
+        }*/
 
     }
 

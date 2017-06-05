@@ -12,5 +12,5 @@ import java.util.List;
  */
 public interface AuthRolePermissionMapper {
     int insertAuthRolePermissions(List<AuthRolePermission> authRolePermissions);
-    void deleteAuthRolePermissionsByRoleId(int roleId);
+    void deleteAuthRolePermissionsByRoleId(Integer roleId);
 }

@@ -1,6 +1,7 @@
 package com.zhuhai.mapper;
 
 import com.zhuhai.entity.AuthPermission;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,8 +16,9 @@ public interface AuthPermissionMapper {
     int insertAuthPermission(AuthPermission authPermission);
     void updateAuthPermission(AuthPermission authPermission);
     void deleteAuthPermission(int[] ids);
-    AuthPermission selectAuthPermissionById(int id);
+    AuthPermission selectAuthPermissionById(Integer id);
     List<AuthPermission> selectAuthPermissionList();
-    List<String> selectAuthPermissionByUserId(int userId);
-    List<AuthPermission> selectAuthPermissionByRoleId(int roleId);
+    List<String> selectAuthPermissionByUserId(Integer userId);
+    List<AuthPermission> selectAuthPermissionByRoleId(Integer roleId);
+    List<AuthPermission> selectAuthPermissionsByUserId(@Param("userId") Integer userId, @Param("systemId") Integer systemId);
 }

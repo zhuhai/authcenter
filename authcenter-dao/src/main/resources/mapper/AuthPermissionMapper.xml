@@ -54,12 +54,21 @@
     </select>-->
     <select id="selectAuthPermissionByUserId" resultType="java.lang.String">
         SELECT p.code FROM auth_permission p,auth_role_permission rp WHERE p.status = 1 AND p.id = rp.permission_id
-          AND rp.role_id IN (SELECT ur.role_id FROM auth_user_role ur WHERE ur.user_id = #{userId})
+          AND rp.role_id IN (SELECT ur.role_id FROM auth_user_role ur WHERE ur.user_id = #{userId}) ORDER BY p.orders ASC;
     </select>
     <!--根据角色id查找该角色对应的权限列表-->
     <select id="selectAuthPermissionByRoleId" resultType="AuthPermission">
         SELECT <include refid="select_column_list"/> FROM auth_permission p WHERE p.id IN
-        (SELECT rp.permission_id FROM auth_role_permission rp WHERE rp.role_id = #{roleId})
+        (SELECT rp.permission_id FROM auth_role_permission rp WHERE rp.role_id = #{roleId}) ORDER BY p.orders ASC;
+    </select>
+    <!--根据用户id和系统id查找该用户的权限列表-->
+    <select id="selectAuthPermissionsByUserId" resultType="AuthPermission">
+       SELECT <include refid="select_column_list"/> FROM auth_permission p,auth_role_permission rp WHERE p.status = 1
+        <if test="systemId != null">
+            AND p.system_id = #{systemId}
+        </if>
+        AND p.id = rp.permission_id
+          AND rp.role_id IN (SELECT ur.role_id FROM auth_user_role ur WHERE ur.user_id = #{userId}) ORDER BY p.orders ASC;
     </select>
 
 

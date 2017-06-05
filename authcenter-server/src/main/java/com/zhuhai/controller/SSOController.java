@@ -2,6 +2,8 @@ package com.zhuhai.controller;
 
 import com.zhuhai.api.AuthSystemService;
 import com.zhuhai.common.constant.AuthConstant;
+import com.zhuhai.common.constant.AuthResult;
+import com.zhuhai.common.constant.AuthResultConstant;
 import com.zhuhai.common.util.RedisUtil;
 import com.zhuhai.entity.AuthSystem;
 import com.zhuhai.shiro.session.AuthSession;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -113,9 +116,9 @@ public class SSOController {
                 subject.login(token);
                 //更新session状态
                 authSessionDao.updateStatus(sessionId, AuthSession.OnlineStatus.on_line);
-                String code = UUID.randomUUID().toString();
                 //全局会话sessionId列表
                 RedisUtil.lpush(AuthConstant.AUTHCENTER_SERVER_SESSION_IDS, sessionId);
+                String code = UUID.randomUUID().toString();
                 //全局会话的code
                 RedisUtil.set(AuthConstant.AUTHCENTER_SERVER_SESSION_ID + "_" + sessionId, code, (int) (session.getTimeout()/1000));
                 //code校验值
@@ -139,6 +142,32 @@ public class SSOController {
 
         return "redirect:login";
 
+    }
+
+    @RequestMapping(value = "/code", method = RequestMethod.POST)
+    @ResponseBody
+    public AuthResult code(@RequestParam("code") String code) {
+        try {
+            String cacheCode = RedisUtil.get(AuthConstant.AUTHCENTER_SERVER_CODE + "_" + code);
+            if (StringUtils.isBlank(cacheCode) || !code.equals(cacheCode)) {
+                return new AuthResult(AuthResultConstant.INVALID_CODE);
+            }
+            return new AuthResult(AuthResultConstant.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new AuthResult(AuthResultConstant.FAIL);
+        }
+
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request) {
+        SecurityUtils.getSubject().logout();
+        String redirectUrl = request.getHeader("Referer");
+        if (StringUtils.isBlank(redirectUrl)) {
+            redirectUrl = "/";
+        }
+        return "redirect:" + redirectUrl;
     }
 
 }
