@@ -15,7 +15,6 @@ public class DataSourceContextHolder {
     private final static ThreadLocal<String> contextHolder = new ThreadLocal<String>();
 
     public static void setDataSource(String dataSource) {
-        logger.info("切换数据源为：{}", dataSource);
         contextHolder.set(dataSource);
     }
 

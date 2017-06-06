@@ -2,6 +2,7 @@ package com.zhuhai.aspect;
 
 import com.zhuhai.db.DataSourceContextHolder;
 import com.zhuhai.db.DataSourceEnum;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -33,13 +34,13 @@ public class DynamicDataSourceAspect {
         DataSourceContextHolder.setDataSource(DataSourceEnum.SLAVE.getName());
     }
 
-   /* @After("masterPointcut()")
+    @AfterReturning("masterPointcut()")
     public void clearMasterDataSource() {
         DataSourceContextHolder.clearDataSource();
     }
 
-    @After("slavePointcut()")
+    @AfterReturning("slavePointcut()")
     public void clearSlaveDataSource() {
         DataSourceContextHolder.clearDataSource();
-    }*/
+    }
 }
