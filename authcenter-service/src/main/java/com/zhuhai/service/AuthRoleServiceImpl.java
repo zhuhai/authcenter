@@ -12,7 +12,6 @@ import com.zhuhai.mapper.AuthRolePermissionMapper;
 import com.zhuhai.mapper.AuthUserMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -25,7 +24,6 @@ import java.util.List;
  * Time: 14:17
  */
 @Service
-@Transactional
 public class AuthRoleServiceImpl implements AuthRoleService {
 
     @Resource

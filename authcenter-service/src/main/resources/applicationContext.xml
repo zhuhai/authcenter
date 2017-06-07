@@ -2,13 +2,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:component-scan base-package="com.zhuhai">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
     <context:property-placeholder location="classpath:db.properties"/>
+
+    <aop:aspectj-autoproxy/>
 
     <!--数据源-->
     <bean id="masterDataSource" class="com.alibaba.druid.pool.DruidDataSource">
@@ -39,12 +42,12 @@
         <property name="defaultTargetDataSource" ref="masterDataSource"/>
     </bean>
     <!--基于JDBC的事务管理器-->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <bean id="transactionManager" class="com.zhuhai.db.DynamicDataSourceTransationManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <!--基于注解的声明式事务-->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
 
     <!--mybatis sqlSessionFactory对象-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -58,5 +61,19 @@
         <property name="basePackage" value="com.zhuhai.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
+
+    <!--声明式事务-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="list*" read-only="true"/>
+            <tx:method name="*" propagation="REQUIRED" rollback-for="Exception"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="pointcut" expression="execution(* com.zhuhai.service..*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+    </aop:config>
 
 </beans>

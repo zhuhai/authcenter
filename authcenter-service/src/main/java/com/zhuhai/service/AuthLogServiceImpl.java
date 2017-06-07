@@ -6,7 +6,6 @@ import com.zhuhai.api.AuthLogService;
 import com.zhuhai.entity.AuthLog;
 import com.zhuhai.mapper.AuthLogMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.List;
  * Time: 13:34
  */
 @Service
-@Transactional
 public class AuthLogServiceImpl implements AuthLogService {
 
     @Resource

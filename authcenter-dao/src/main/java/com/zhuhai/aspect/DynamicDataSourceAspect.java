@@ -2,11 +2,6 @@ package com.zhuhai.aspect;
 
 import com.zhuhai.db.DataSourceContextHolder;
 import com.zhuhai.db.DataSourceEnum;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA
@@ -14,32 +9,32 @@ import org.springframework.stereotype.Component;
  * Date: 2017/5/20
  * Time: 15:26
  */
-@Component
-@Aspect
+//@Component
+//@Aspect
 public class DynamicDataSourceAspect {
 
-    @Pointcut("execution(* com.zhuhai.mapper.*.insert*(..)) || execution(* com.zhuhai.mapper.*.update*(..)) || execution(* com.zhuhai.mapper.*.delete*(..))")
+    //@Pointcut("execution(* com.zhuhai.mapper.*.insert*(..)) || execution(* com.zhuhai.mapper.*.update*(..)) || execution(* com.zhuhai.mapper.*.delete*(..))")
     public void masterPointcut() {}
 
-    @Pointcut("execution(* com.zhuhai.mapper.*.select*(..)) || execution(* com.zhuhai.mapper..*.count*(..))")
+    //@Pointcut("execution(* com.zhuhai.mapper.*.select*(..)) || execution(* com.zhuhai.mapper..*.count*(..))")
     public void slavePointcut() {}
 
-    @Before("masterPointcut()")
+    //@Before("masterPointcut()")
     public void switchMasterDataSource() {
         DataSourceContextHolder.setDataSource(DataSourceEnum.MASTER.getName());
     }
 
-    @Before("slavePointcut()")
+    //@Before("slavePointcut()")
     public void switchSlaveDataSource() {
         DataSourceContextHolder.setDataSource(DataSourceEnum.SLAVE.getName());
     }
 
-    @AfterReturning("masterPointcut()")
+    //@AfterReturning("masterPointcut()")
     public void clearMasterDataSource() {
         DataSourceContextHolder.clearDataSource();
     }
 
-    @AfterReturning("slavePointcut()")
+    //@AfterReturning("slavePointcut()")
     public void clearSlaveDataSource() {
         DataSourceContextHolder.clearDataSource();
     }

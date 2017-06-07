@@ -13,10 +13,10 @@ import com.zhuhai.mapper.AuthUserRoleMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +26,6 @@ import java.util.List;
  * Time: 22:37
  */
 @Service
-@Transactional
 public class AuthUserServiceImpl implements AuthUserService{
 
     @Resource
@@ -136,4 +135,33 @@ public class AuthUserServiceImpl implements AuthUserService{
         }
         authUserOrganizationMapper.deleteAuthUserOrganizationsByOrganizationId(organizationId);
     }
+
+
+    public boolean saveUserAndOrganization(AuthUser authUser, Integer[] organizationIds) throws ServiceException {
+        if (authUser == null) {
+            return false;
+        }
+        int count = authUserMapper.insertAuthUser(authUser);
+        if (count == 0) {
+            throw new ServiceException("用户名已经存在");
+        }
+        if (!ArrayUtils.isEmpty(organizationIds)) {
+            List<AuthUserOrganization> list = new ArrayList<>();
+            for (Integer organizationId : organizationIds) {
+                AuthUserOrganization authUserOrganization = new AuthUserOrganization();
+                authUserOrganization.setUserId(authUser.getId());
+                authUserOrganization.setOrganizationId(organizationId);
+                list.add(authUserOrganization);
+            }
+            count = authUserOrganizationMapper.insertAuthUserOrganizations(list);
+            if (count == 0) {
+                throw new ServiceException("用户部门关系已存在");
+            }
+        }
+
+        return true;
+
+
+    }
+
 }
