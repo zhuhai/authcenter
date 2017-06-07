@@ -137,30 +137,26 @@ public class AuthUserServiceImpl implements AuthUserService{
     }
 
 
-    public boolean saveUserAndOrganization(AuthUser authUser, Integer[] organizationIds) throws ServiceException {
+    @Override
+    public void saveUserAndOrganization(AuthUser authUser, Integer[] organizationIds) throws ServiceException {
         if (authUser == null) {
-            return false;
+            return;
         }
-        int count = authUserMapper.insertAuthUser(authUser);
-        if (count == 0) {
-            throw new ServiceException("用户名已经存在");
-        }
-        if (!ArrayUtils.isEmpty(organizationIds)) {
-            List<AuthUserOrganization> list = new ArrayList<>();
-            for (Integer organizationId : organizationIds) {
-                AuthUserOrganization authUserOrganization = new AuthUserOrganization();
-                authUserOrganization.setUserId(authUser.getId());
-                authUserOrganization.setOrganizationId(organizationId);
-                list.add(authUserOrganization);
+        try {
+            authUserMapper.insertAuthUser(authUser);
+            if (!ArrayUtils.isEmpty(organizationIds)) {
+                List<AuthUserOrganization> list = new ArrayList<>();
+                for (Integer organizationId : organizationIds) {
+                    AuthUserOrganization authUserOrganization = new AuthUserOrganization();
+                    authUserOrganization.setUserId(authUser.getId());
+                    authUserOrganization.setOrganizationId(organizationId);
+                    list.add(authUserOrganization);
+                }
+                authUserOrganizationMapper.insertAuthUserOrganizations(list);
             }
-            count = authUserOrganizationMapper.insertAuthUserOrganizations(list);
-            if (count == 0) {
-                throw new ServiceException("用户部门关系已存在");
-            }
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage(), e);
         }
-
-        return true;
-
 
     }
 

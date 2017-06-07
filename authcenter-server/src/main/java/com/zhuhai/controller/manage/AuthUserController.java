@@ -29,8 +29,11 @@ public class AuthUserController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createUser(AuthUser user) {
-        authUserService.saveAuthUser(user);
+    public String createUser(AuthUser user,Integer organizationId) {
+        //authUserService.saveAuthUser(user);
+        Integer[] organizations = new Integer[1];
+        organizations[0] = organizationId;
+        authUserService.saveUserAndOrganization(user, organizations);
         return "manage/index";
     }
 

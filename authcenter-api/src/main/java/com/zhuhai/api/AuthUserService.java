@@ -107,5 +107,5 @@ public interface AuthUserService {
      */
     void removeAuthUserOrganizationByOrganizationId(Integer organizationId) throws ServiceException;
 
-    boolean saveUserAndOrganization(AuthUser authUser, Integer[] organizationIds) throws ServiceException;
+    void saveUserAndOrganization(AuthUser authUser, Integer[] organizationIds) throws ServiceException;
 }

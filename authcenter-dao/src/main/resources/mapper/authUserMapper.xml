@@ -11,7 +11,7 @@
 
     <!--添加用户-->
     <insert id="insertAuthUser" parameterType="AuthUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-      INSERT ignore INTO auth_user(id,username,`password`,salt,email,phone,sex,avatar,realname,status)
+      INSERT INTO auth_user(id,username,`password`,salt,email,phone,sex,avatar,realname,status)
       VALUES (#{id},#{userName},#{password},#{salt},#{email},#{phone},#{sex},#{avatar},#{realName},#{status})
     </insert>
 

@@ -17,6 +17,7 @@
         <form action="/authUser/create" method="post">
             <span>用户名：</span><input type="text" name="userName"/><br>
             <span>密码：</span><input type="password" name="password"/><br>
+            <span>部门：</span><input type="text" name="organizationId"/><br>
             <button type="submit">提交</button>
         </form>
     </div>
