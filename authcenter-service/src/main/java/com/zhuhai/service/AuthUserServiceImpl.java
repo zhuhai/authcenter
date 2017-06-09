@@ -139,11 +139,6 @@ public class AuthUserServiceImpl implements AuthUserService{
 
     @Override
     public void saveUserAndOrganization(AuthUser authUser, Integer[] organizationIds) throws ServiceException {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if (authUser == null) {
             return;
         }

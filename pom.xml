@@ -47,6 +47,7 @@
         <freemarker.version>2.3.23</freemarker.version>
         <httpclient.version>4.5.3</httpclient.version>
         <shiro-freemarker-tags.verion>0.1</shiro-freemarker-tags.verion>
+        <cglib.version>3.2.5</cglib.version>
     </properties>
 
 
@@ -112,6 +113,12 @@
                 <artifactId>aspectjrt</artifactId>
                 <version>${aspectj.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>${cglib.version}</version>
+            </dependency>
+
 
 
 

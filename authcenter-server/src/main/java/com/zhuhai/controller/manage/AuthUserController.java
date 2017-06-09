@@ -3,6 +3,7 @@ package com.zhuhai.controller.manage;
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthUserService;
 import com.zhuhai.entity.AuthUser;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +24,13 @@ public class AuthUserController {
     @Resource
     private AuthUserService authUserService;
 
+    @RequiresPermissions("auth:user:add")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createUser() {
         return "manage/userCreate";
     }
 
+    @RequiresPermissions("auth:user:add")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createUser(AuthUser user,Integer[] organizationIds) {
 

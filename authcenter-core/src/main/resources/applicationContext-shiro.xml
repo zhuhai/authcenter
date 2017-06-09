@@ -80,14 +80,9 @@
         <property name="httpOnly" value="true"/>
         <property name="maxAge" value="${auth.remeberMe.timeout}"/>
     </bean>
-    <!-- 开启Shiro Spring AOP权限注解@RequiresPermissions的支持 -->
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
 
     <!--shiro生命周期-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
 
 </beans>

@@ -8,8 +8,8 @@
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 
     <dubbo:protocol name="dubbo" port="20881"/>
-    <!--超时时间设置为6s，也可为每个服务单独设置-->
-    <dubbo:provider timeout="1000" retries="0"/>
+    <!--超时时间设置为10s,失败不重试，也可为每个服务单独设置-->
+    <dubbo:provider timeout="10000" retries="0"/>
 
     <dubbo:service interface="com.zhuhai.api.AuthUserService" ref="authUserServiceImpl"/>
 

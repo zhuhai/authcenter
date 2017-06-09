@@ -7,6 +7,7 @@ import com.zhuhai.common.util.PropertiesUtil;
 import com.zhuhai.entity.AuthRole;
 import com.zhuhai.entity.AuthUser;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -65,7 +66,11 @@ public class AuthCenterRealm extends AuthorizingRealm {
             return null;
         }
         Set<String> permissionSet = new HashSet<>();
-        permissionSet.addAll(authPermissionList);
+        for (String permission : authPermissionList) {
+            if (StringUtils.isNotBlank(permission)) {
+                permissionSet.add(permission);
+            }
+        }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.setRoles(roleSet);
         authorizationInfo.setStringPermissions(permissionSet);
