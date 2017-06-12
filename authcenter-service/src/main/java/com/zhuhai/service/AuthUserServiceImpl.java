@@ -14,6 +14,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import tk.mybatis.orderbyhelper.OrderByHelper;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.List;
  * Time: 22:37
  */
 @Service
-public class AuthUserServiceImpl implements AuthUserService{
+public class AuthUserServiceImpl implements AuthUserService {
 
     @Resource
     private AuthUserMapper authUserMapper;
@@ -73,8 +74,9 @@ public class AuthUserServiceImpl implements AuthUserService{
     }
 
     @Override
-    public PageInfo<AuthUser> listAuthUser(Integer pageNum, Integer pageSize) {
+    public PageInfo<AuthUser> listAuthUser(String sidx, String sord, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+        OrderByHelper.orderBy(sidx + " " + sord);
         List<AuthUser> authUserList = authUserMapper.selectAuthUserList();
         return new PageInfo<AuthUser>(authUserList);
     }

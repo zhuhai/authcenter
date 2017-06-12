@@ -17,6 +17,7 @@ import java.util.List;
 public interface AuthUserService {
     /**
      * 添加用户
+     *
      * @param authUser
      * @return
      */
@@ -24,18 +25,21 @@ public interface AuthUserService {
 
     /**
      * 修改用户
+     *
      * @param authUser
      */
     void updateAuthUser(AuthUser authUser) throws ServiceException;
 
     /**
      * 删除用户
+     *
      * @param ids
      */
     void removeAuthUser(int[] ids) throws ServiceException;
 
     /**
      * 根据用户id获取用户
+     *
      * @param id
      * @return
      */
@@ -43,6 +47,7 @@ public interface AuthUserService {
 
     /**
      * 根据用户名获取用户
+     *
      * @param userName
      * @return
      */
@@ -50,14 +55,16 @@ public interface AuthUserService {
 
     /**
      * 分页获取用户列表
+     *
      * @param pageNum
      * @param pageSize
      * @return
      */
-    PageInfo<AuthUser> listAuthUser(Integer pageNum, Integer pageSize) throws ServiceException;
+    PageInfo<AuthUser> listAuthUser(String sidx, String sord, Integer pageNum, Integer pageSize) throws ServiceException;
 
     /**
      * 添加用户角色
+     *
      * @param authUserRoles
      * @return
      * @throws ServiceException
@@ -66,6 +73,7 @@ public interface AuthUserService {
 
     /**
      * 根据用户id删除用户角色
+     *
      * @param userId
      * @throws ServiceException
      */
@@ -73,6 +81,7 @@ public interface AuthUserService {
 
     /**
      * 根据角色id删除用户角色
+     *
      * @param roleId
      * @throws ServiceException
      */
@@ -80,6 +89,7 @@ public interface AuthUserService {
 
     /**
      * 添加用户组织
+     *
      * @param authUserOrganizations
      * @return
      * @throws ServiceException
@@ -88,6 +98,7 @@ public interface AuthUserService {
 
     /**
      * 修改用户组织
+     *
      * @param authUserOrganization
      * @throws ServiceException
      */
@@ -95,6 +106,7 @@ public interface AuthUserService {
 
     /**
      * 根据用户id删除用户组织
+     *
      * @param userId
      * @throws ServiceException
      */
@@ -102,6 +114,7 @@ public interface AuthUserService {
 
     /**
      * 根据组织id删除用户组织
+     *
      * @param organizationId
      * @throws ServiceException
      */

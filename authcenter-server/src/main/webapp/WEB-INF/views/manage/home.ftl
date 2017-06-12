@@ -118,10 +118,11 @@
             <#if menus??>
                 <#list menus as menu>
                     <#if menu?? && menu.pid == 0>
-                        <li class="active">
+                        <li class="">
                             <a href="#" data-url="${(menu.url)!}" class="dropdown-toggle">
-                                <i class="menu-icon fa ${(menu.icon)!}"></i>
+                                <i class="menu-icon ${(menu.icon)!}"></i>
                                 <span class="menu-text">${(menu.name)!}</span>
+                                <b class="arrow fa fa-angle-down"></b>
                             </a>
                             <b class="arrow"></b>
                             <ul class="submenu">

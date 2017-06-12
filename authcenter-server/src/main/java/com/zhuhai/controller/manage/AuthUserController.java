@@ -1,6 +1,5 @@
 package com.zhuhai.controller.manage;
 
-import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthUserService;
 import com.zhuhai.entity.AuthUser;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,7 +17,7 @@ import javax.annotation.Resource;
  * Time: 15:11
  */
 @Controller
-@RequestMapping("/authUser")
+@RequestMapping("/user")
 public class AuthUserController {
 
     @Resource
@@ -27,7 +26,7 @@ public class AuthUserController {
     @RequiresPermissions("auth:user:add")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createUser() {
-        return "manage/userCreate";
+        return "manage/user/userSave";
     }
 
     @RequiresPermissions("auth:user:add")
@@ -38,11 +37,15 @@ public class AuthUserController {
         return "manage/index";
     }
 
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public String getAuthUserList(Model model) {
-        PageInfo<AuthUser> pageInfo = authUserService.listAuthUser(1,10);
-        model.addAttribute("authUserList",pageInfo.getList());
-        return "manage/userList";
+    @RequiresPermissions("auth:user:view")
+    @RequestMapping(value = "/",method = RequestMethod.GET)
+    public String index(Model model) {
+
+        return "manage/user/userList";
+    }
+
+    public String userList() {
+        return "";
     }
 
 }

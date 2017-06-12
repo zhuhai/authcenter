@@ -73,6 +73,10 @@
             <artifactId>pagehelper</artifactId>
         </dependency>
         <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>orderby-helper</artifactId>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
