@@ -17,10 +17,14 @@ ace.load_ajax_scripts(scripts,function(){
         }
     });
     $(grid_selector).jqGrid({
+        jsonReader:{
+            page: "currentPage",
+            total: "totalPage"
+        },
         url:"/user/list",
         datatype: "json",
         mtype:"GET",
-        height: '300',
+        height: 300,
         colNames:['编号','用户名','部门','角色','是否锁定','创建时间'],
         colModel:[
             {
@@ -72,6 +76,8 @@ ace.load_ajax_scripts(scripts,function(){
             }
 
         ],
+        //rownumbers: true,
+        //rownumWidth: 30,
         viewrecords : true,
         rowNum:10,
         rowList:[10,20,30],
@@ -80,7 +86,7 @@ ace.load_ajax_scripts(scripts,function(){
         //第一个参数表示是否显示排序图标，第二个参数表示图标排序方式，vertical:垂直，horizontal：水平
         //第三个参数指单击功 能，true：单击列可排序，false：单击图标排序。
         viewsortcols:[true,'vertical',true],
-        multiselect: true,
+        //multiselect: true,
         multiselectWidth:30,
         //multikey: "ctrlKey",
         multiboxonly: true,
@@ -93,8 +99,8 @@ ace.load_ajax_scripts(scripts,function(){
                 enableTooltips(table);
             }, 0);
         },
-
-        autowidth: true
+        sortorder: "desc"
+        //autowidth: true
 
     });
 //trigger window resize to make the grid get the correct size

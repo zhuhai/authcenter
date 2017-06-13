@@ -17,21 +17,21 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="well well-sm">
-                <shiro:hasPermission name="user:create">
+                <@shiro.hasPermission name="auth:user:create">
                     <a id="addButton" role="button" class="btn btn-primary btn-sm no-border" data-toggle="modal" data-target="#create-user-modal">添加</a>
-                </shiro:hasPermission>
-                <shiro:hasPermission name="user:update">
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="auth:user:update">
                     <a id="editButton" role="button" class="btn btn-purple btn-sm no-border" data-toggle="modal">修改</a>
-                </shiro:hasPermission>
-                <shiro:hasPermission name="user:update">
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="auth:user:update">
                     <a id="lockButton" role="button" class="btn btn-pink btn-sm no-border">锁定</a>
-                </shiro:hasPermission>
-                <shiro:hasPermission name="user:update">
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="auth:user:update">
                     <a id="unLockButton" role="button" class="btn btn-info btn-sm no-border">解锁</a>
-                </shiro:hasPermission>
-                <shiro:hasPermission name="user:delete">
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="auth:user:delete">
                     <a id="delButton" role="button" class="btn btn-danger btn-sm no-border">删除</a>
-                </shiro:hasPermission>
+                </@shiro.hasPermission>
             </div>
             <table id="grid-table"></table>
             <div id="grid-pager"></div>
@@ -182,7 +182,6 @@
             </div>
         </div><!-- /.col -->
     </div>
-
     <script type="text/javascript" src="/static/js/system/user.js"></script>
 </body>
 </html>
