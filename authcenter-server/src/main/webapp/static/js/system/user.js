@@ -25,7 +25,7 @@ ace.load_ajax_scripts(scripts,function(){
         datatype: "json",
         mtype:"GET",
         height: 300,
-        colNames:['编号','用户名','部门','角色','是否锁定','创建时间'],
+        colNames:['编号','用户名','头像','姓名','性别','手机','邮箱','部门','角色','是否锁定','创建时间'],
         colModel:[
             {
                 key:true,
@@ -39,26 +39,73 @@ ace.load_ajax_scripts(scripts,function(){
                 sortable:false
             },
             {
-                name:'organization',
+                name:'avatar',
+                width:40,
+                sortable:false,
+                align:'center',
+                formatter:function (cellvalue, options, rowObject) {
+                    var imgSrc = '';
+                    if (cellvalue) {
+                        imgSrc = '<img src="'+cellvalue+'" width="30px"/>';
+                    }
+                    return imgSrc;
+                }
+            },
+            {
+                name:'realName',
                 width:90,
                 sortable:false
             },
             {
-                name:'roleName',
+                name:'sex',
+                width:90,
+                sortable:false,
+                formatter:function (cellvalue, options, rowObject) {
+                    var screenName = '';
+                    switch (cellvalue) {
+                        case 0:
+                            screenName = '男';
+                            break;
+                        case 1:
+                            screenName = '女';
+                            break;
+                        default:
+                            screenName = '';
+                    }
+                    return screenName;
+                }
+            },
+            {
+                name:'phone',
+                width:80,
+                sortable:false
+            },
+            {
+                name:'email',
                 width:90,
                 sortable:false
             },
             {
-                name:'locked',
+                name:'organization.name',
+                width:90,
+                sortable:false
+            },
+            {
+                name:'roles[0].name',
+                width:90,
+                sortable:false
+            },
+            {
+                name:'status',
                 width:90,
                 sortable:false,
                 formatter: function (cellvalue,options,rowObject) {
                     var screenValue = '';
                     switch (cellvalue) {
-                        case false:
+                        case 1:
                             screenValue = '正常';
                             break;
-                        case true:
+                        case 0:
                             screenValue = '<span style="color:red">锁定</span>';
                             break;
                         default :

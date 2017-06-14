@@ -24,7 +24,7 @@ public class AuthUser implements Serializable {
     private String email;
     /**手机号**/
     private String phone;
-    /**性别**/
+    /**性别(0：男 1：女)**/
     private Byte sex;
     /**头像**/
     private String avatar;

@@ -46,4 +46,6 @@ public interface AuthOrganizationService {
      */
     PageInfo<AuthOrganization> listAuthOrganization(Integer pageNum, Integer pageSize) throws ServiceException;
 
+    AuthOrganization getAuthOrganizationByUserId(Integer userId) throws ServiceException;
+
 }

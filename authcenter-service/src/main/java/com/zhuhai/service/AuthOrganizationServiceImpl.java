@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthOrganizationService;
 import com.zhuhai.entity.AuthOrganization;
+import com.zhuhai.exception.ServiceException;
 import com.zhuhai.mapper.AuthOrganizationMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
@@ -62,5 +63,13 @@ public class AuthOrganizationServiceImpl implements AuthOrganizationService {
         PageHelper.startPage(pageNum, pageSize);
         List<AuthOrganization> authOrganizationList = authOrganizationMapper.selectAuthOrganizationList();
         return new PageInfo<AuthOrganization>(authOrganizationList);
+    }
+
+    @Override
+    public AuthOrganization getAuthOrganizationByUserId(Integer userId) throws ServiceException {
+        if (userId == null) {
+            return null;
+        }
+        return authOrganizationMapper.selectAuthOrganizationByUserId(userId);
     }
 }

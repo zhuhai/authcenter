@@ -35,4 +35,8 @@
     <select id="selectAuthOrganizationList" resultType="AuthOrganization">
         SELECT <include refid="select_column_list"/> FROM auth_organization
     </select>
+    <select id="selectAuthOrganizationByUserId" resultType="AuthOrganization">
+        SELECT <include refid="select_column_list"/> FROM auth_organization ao
+        LEFT JOIN auth_user_organization auo ON ao.id = auo.organization_id WHERE auo.user_id = #{userId}
+    </select>
 </mapper>

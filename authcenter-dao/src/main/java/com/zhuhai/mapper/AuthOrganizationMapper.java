@@ -17,5 +17,5 @@ public interface AuthOrganizationMapper {
     void deleteAuthOrganization(int[] ids);
     AuthOrganization selectAuthOrganization(Integer id);
     List<AuthOrganization> selectAuthOrganizationList();
-
+    AuthOrganization selectAuthOrganizationByUserId(Integer userId);
 }

@@ -49,6 +49,7 @@
         <httpclient.version>4.5.3</httpclient.version>
         <shiro-freemarker-tags.verion>0.1</shiro-freemarker-tags.verion>
         <cglib.version>3.2.5</cglib.version>
+        <joda-time.version>2.9.9</joda-time.version>
     </properties>
 
 
@@ -221,6 +222,12 @@
                 <artifactId>protostuff-runtime</artifactId>
                 <version>${protostuff.version}</version>
             </dependency>
+            <!--时间工具类-->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
 
             <!--shiro-->
             <dependency>
@@ -302,6 +309,7 @@
                 <artifactId>shiro-freemarker-tags</artifactId>
                 <version>${shiro-freemarker-tags.verion}</version>
             </dependency>
+
 
         </dependencies>
     </dependencyManagement>
