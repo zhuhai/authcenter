@@ -1,5 +1,5 @@
 var scripts = [null,'/static/js/common.js','/static/js/bootstrap-multiselect.js','/static/js/sha1.js','/static/js/bootbox.min.js',null];
-ace.load_ajax_scripts(scripts,function(){
+$(".page-content-area").ace_ajax('loadScripts',scripts,function(){
     var grid_selector = "#grid-table";
     var pager_selector = "#grid-pager";
 //resize to fit page size
@@ -16,6 +16,7 @@ ace.load_ajax_scripts(scripts,function(){
             }, 0);
         }
     });
+
     $(grid_selector).jqGrid({
         jsonReader:{
             page: "currentPage",
@@ -24,7 +25,7 @@ ace.load_ajax_scripts(scripts,function(){
         url:"/user/list",
         datatype: "json",
         mtype:"GET",
-        height: 300,
+        height: 310,
         colNames:['编号','用户名','头像','姓名','性别','手机','邮箱','部门','角色','是否锁定','创建时间'],
         colModel:[
             {
@@ -46,7 +47,7 @@ ace.load_ajax_scripts(scripts,function(){
                 formatter:function (cellvalue, options, rowObject) {
                     var imgSrc = '';
                     if (cellvalue) {
-                        imgSrc = '<img src="'+cellvalue+'" width="30px"/>';
+                        imgSrc = '<img src="'+cellvalue+'" width="30px" height="30px"/>';
                     }
                     return imgSrc;
                 }
@@ -58,7 +59,7 @@ ace.load_ajax_scripts(scripts,function(){
             },
             {
                 name:'sex',
-                width:90,
+                width:50,
                 sortable:false,
                 formatter:function (cellvalue, options, rowObject) {
                     var screenName = '';
@@ -77,12 +78,12 @@ ace.load_ajax_scripts(scripts,function(){
             },
             {
                 name:'phone',
-                width:80,
+                width:100,
                 sortable:false
             },
             {
                 name:'email',
-                width:90,
+                width:100,
                 sortable:false
             },
             {
@@ -91,13 +92,28 @@ ace.load_ajax_scripts(scripts,function(){
                 sortable:false
             },
             {
-                name:'roles[0].name',
+                name:'roles',
                 width:90,
-                sortable:false
+                sortable:false,
+                formatter:function (cellvalue, options, rowObject) {
+                    var roles = rowObject.roles;
+                    var roleNames = '';
+                    if (roles instanceof Array) {
+                        for(var i = 0; i < roles.length; i++) {
+                            roleNames += roles[i].name;
+                            if (i < roles.length-1) {
+                                roleNames += ',';
+                            }
+                        }
+                    }
+
+                    return roleNames;
+                }
             },
             {
                 name:'status',
-                width:90,
+                align:'center',
+                width:50,
                 sortable:false,
                 formatter: function (cellvalue,options,rowObject) {
                     var screenValue = '';
@@ -117,7 +133,7 @@ ace.load_ajax_scripts(scripts,function(){
             {
                 name:'createTime',
                 index:'create_time',
-                width:90,
+                width:120,
                 sortable:true
 
             }
@@ -126,14 +142,14 @@ ace.load_ajax_scripts(scripts,function(){
         //rownumbers: true,
         //rownumWidth: 30,
         viewrecords : true,
-        rowNum:10,
+        rowNum:15,
         rowList:[10,20,30],
         pager : pager_selector,
         altRows: true,
         //第一个参数表示是否显示排序图标，第二个参数表示图标排序方式，vertical:垂直，horizontal：水平
         //第三个参数指单击功 能，true：单击列可排序，false：单击图标排序。
         viewsortcols:[true,'vertical',true],
-        //multiselect: true,
+        multiselect: true,
         multiselectWidth:30,
         //multikey: "ctrlKey",
         multiboxonly: true,
@@ -146,8 +162,8 @@ ace.load_ajax_scripts(scripts,function(){
                 enableTooltips(table);
             }, 0);
         },
-        sortorder: "desc"
-        //autowidth: true
+        sortorder: "desc",
+        autowidth: true
 
     });
 //trigger window resize to make the grid get the correct size

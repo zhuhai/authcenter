@@ -68,4 +68,14 @@
     <servlet-name>Druid</servlet-name>
     <url-pattern>/druid/*</url-pattern>
   </servlet-mapping>-->
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/WEB-INF/views/error/404.ftl</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/WEB-INF/views/error/500.ftl</location>
+  </error-page>
+
 </web-app>

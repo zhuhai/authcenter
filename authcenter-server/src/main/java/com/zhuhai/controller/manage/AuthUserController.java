@@ -65,8 +65,8 @@ public class AuthUserController {
     @ResponseBody
     public JqGridView<AuthUserDTO> userList(@RequestParam(value = "sidx", required = false, defaultValue = "create_time") String sidx,
                                             @RequestParam(value = "sord", required = false, defaultValue = "desc") String sord,
-                                            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                            @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                                            @RequestParam(value = "page", required = false, defaultValue = "1") Integer pageNum,
+                                            @RequestParam(value = "rows", required = false, defaultValue = "10") Integer pageSize) {
 
         JqGridView<AuthUserDTO> jqGridView = new JqGridView<AuthUserDTO>();
         try {

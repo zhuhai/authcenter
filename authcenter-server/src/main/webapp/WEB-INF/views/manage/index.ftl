@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title></title>
+    <title>首页</title>
 </head>
 <body>
 <div class="alert alert-block alert-success">
@@ -12,9 +12,10 @@
 </div>
 <script type="text/javascript">
     var scripts = [null,null];
-    ace.load_ajax_scripts(scripts, function() {
+    /*ace.load_ajax_scripts(scripts, function() {
         //inline scripts related to this page
-    });
+    });*/
+    $(".page-content-area").ace_ajax('loadScripts',scripts,null);
 </script>
 </body>
 </html>
