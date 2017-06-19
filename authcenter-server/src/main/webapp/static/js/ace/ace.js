@@ -93,7 +93,7 @@ jQuery(function($) {
 			 'close_active': true,
 			 
 			 'content_url': function(hash) {
-				 return hash;
+				return hash;
 			  },
 			  
 			  'default_url': '/index'//default hash

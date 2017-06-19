@@ -10,7 +10,8 @@ public enum AuthResultConstant {
 
     SUCCESS(1, "success"),
     FAIL(0, "fail"),
-    INVALID_CODE(10001, "Invalid code");
+    INVALID_CODE(10001, "Invalid code"),
+    INVALID_USERNAME(10002,"Invalid userName");
 
 
     private int code;

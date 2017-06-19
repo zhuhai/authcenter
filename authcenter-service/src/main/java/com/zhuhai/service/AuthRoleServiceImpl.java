@@ -64,7 +64,9 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 
     @Override
     public PageInfo<AuthRole> listAuthRole(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+        if (pageNum != null && pageSize != null) {
+            PageHelper.startPage(pageNum, pageSize);
+        }
         List<AuthRole> authRoleList = authRoleMapper.selectAuthRoleList();
         return new PageInfo<AuthRole>(authRoleList);
     }
@@ -76,7 +78,7 @@ public class AuthRoleServiceImpl implements AuthRoleService {
         }
         AuthUser authUser = authUserMapper.selectAuthUserById(userId);
         //用户不存在或者用户已被禁用
-        if (authUser == null || authUser.getStatus() == 0) {
+        if (authUser == null) {
             return null;
         }
         return authRoleMapper.selectAuthRoleListByUserId(userId);

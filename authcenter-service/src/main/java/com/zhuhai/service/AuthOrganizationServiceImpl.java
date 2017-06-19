@@ -60,7 +60,9 @@ public class AuthOrganizationServiceImpl implements AuthOrganizationService {
 
     @Override
     public PageInfo<AuthOrganization> listAuthOrganization(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+        if (pageNum != null && pageSize != null) {
+            PageHelper.startPage(pageNum, pageSize);
+        }
         List<AuthOrganization> authOrganizationList = authOrganizationMapper.selectAuthOrganizationList();
         return new PageInfo<AuthOrganization>(authOrganizationList);
     }

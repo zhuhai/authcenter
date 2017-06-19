@@ -140,12 +140,22 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 
     @Override
-    public void saveUserAndOrganization(AuthUser authUser, Integer[] organizationIds) throws ServiceException {
+    public void saveUser(AuthUser authUser, Integer[] roleIds, Integer[] organizationIds) throws ServiceException {
         if (authUser == null) {
             return;
         }
         try {
             authUserMapper.insertAuthUser(authUser);
+            if (!ArrayUtils.isEmpty(roleIds)) {
+                List<AuthUserRole> userRoles = new ArrayList<>();
+                for (Integer roleId : roleIds) {
+                    AuthUserRole authUserRole = new AuthUserRole();
+                    authUserRole.setUserId(authUser.getId());
+                    authUserRole.setRoleId(roleId);
+                    userRoles.add(authUserRole);
+                }
+                authUserRoleMapper.insertAuthUserRoles(userRoles);
+            }
             if (!ArrayUtils.isEmpty(organizationIds)) {
                 List<AuthUserOrganization> list = new ArrayList<>();
                 for (Integer organizationId : organizationIds) {

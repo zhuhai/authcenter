@@ -142,7 +142,7 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
         //rownumbers: true,
         //rownumWidth: 30,
         viewrecords : true,
-        rowNum:15,
+        rowNum:10,
         rowList:[10,20,30],
         pager : pager_selector,
         altRows: true,
@@ -205,12 +205,19 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
                 required:true,
                 rangelength:[6,18]
             },
+            repassword:{
+                required:true,
+                equalTo:"#password"
+            },
+            email:{
+                email:true
+            }/*,
             organizationId:{
                 required:true
             },
             roleIds:{
                 required:true
-            }
+            }*/
         },
         messages:{
             userName:{
@@ -220,12 +227,19 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
                 required:'请输入密码',
                 rangelength:'密码长度为6~18位'
             },
+            repassword:{
+                required:"请再次输入密码",
+                equalTo:"两次密码输入不一致"
+            },
+            email:{
+                email:'电子邮件格式错误'
+            }/*,
             organizationId:{
                 required:'请选择部门'
             },
             roleIds:{
                 required:'请选择角色'
-            }
+            }*/
 
         },
         highlight:function(e){
@@ -251,8 +265,13 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
         submitHandler:function(form){
             var userName = $("#userName").val();
             var password = CryptoJS.SHA1($("#password").val())+"";
+            var email = $("#email").val();
             var organizationId = $("#organizationId").val();
             var roleIds = $("#roleIds").val();
+            var sex = $("input[name='sex']:checked").val();
+            var status = $("input[name='status']:checked").val();
+            var realName = $("#realName").val();
+            var phone = $("#phone").val();
             if(!roleIds) {
                 alertErrorNotice("请选择角色！");
                 return;
@@ -260,14 +279,16 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
             $.ajax({
                 url:'/user/create',
                 type:'post',
-                data:{userName:userName,password:password,organizationId:organizationId,roleIds:roleIds.toString()},
+                data:{userName:userName,password:password,email:email,organizationIds:organizationId,roleIds:roleIds.toString(),sex:sex,status:status},
                 dataType:'json',
                 success:function(result) {
-                    if (result && result.success) {
+                    if (result && result.code == 1) {
                         $("#create-user-modal").modal('hide');
                         $(grid_selector).jqGrid().trigger("reloadGrid");
-                    } else {
-                        alertErrorNotice(result.msg)
+                    } else if (result.code == 0){
+                        alertErrorNotice("系统繁忙，请稍后再试！");
+                    } else if (result.code == 10002) {
+                        alertErrorNotice("用户名已存在！");
                     }
                 },
                 error:function() {

@@ -4,12 +4,15 @@ import com.github.pagehelper.PageInfo;
 import com.zhuhai.api.AuthOrganizationService;
 import com.zhuhai.api.AuthRoleService;
 import com.zhuhai.api.AuthUserService;
+import com.zhuhai.common.constant.AuthResult;
+import com.zhuhai.common.constant.AuthResultConstant;
 import com.zhuhai.common.util.DateUtil;
 import com.zhuhai.dto.AuthUserDTO;
 import com.zhuhai.dto.JqGridView;
 import com.zhuhai.entity.AuthOrganization;
 import com.zhuhai.entity.AuthRole;
 import com.zhuhai.entity.AuthUser;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,18 +49,40 @@ public class AuthUserController {
     private AuthRoleService authRoleService;
 
 
-    @RequiresPermissions("auth:user:add")
+    @RequiresPermissions("auth:user:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createUser(AuthUser user, Integer[] organizationIds) {
+    @ResponseBody
+    public AuthResult createUser(AuthUser user,
+                                 @RequestParam(value = "roleIds", required = false) Integer[] roleIds,
+                                 @RequestParam(value = "organizationIds", required = false) Integer[] organizationIds) {
 
-        authUserService.saveUserAndOrganization(user, organizationIds);
-        return "manage/index";
+        try {
+            AuthUser authUser = authUserService.getAuthUserByName(user.getUserName());
+            if (authUser == null) {
+                String salt = UUID.randomUUID().toString().replace("-", "");
+                user.setSalt(salt);
+                user.setPassword(DigestUtils.sha1Hex(user.getPassword() + salt));
+                authUserService.saveUser(user, roleIds, organizationIds);
+                return new AuthResult(AuthResultConstant.SUCCESS);
+            } else {
+                return new AuthResult(AuthResultConstant.INVALID_USERNAME);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new AuthResult(AuthResultConstant.FAIL);
+        }
     }
 
     @RequiresPermissions("auth:user:view")
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) {
-
+        PageInfo<AuthOrganization> pageInfo = authOrganizationService.listAuthOrganization(null, null);
+        List<AuthOrganization> organizationList = pageInfo.getList();
+        PageInfo<AuthRole> authRolePageInfo = authRoleService.listAuthRole(null, null);
+        List<AuthRole> roleList = authRolePageInfo.getList();
+        model.addAttribute("organizationList", organizationList);
+        model.addAttribute("roleList", roleList);
         return "manage/user/userList";
     }
 
