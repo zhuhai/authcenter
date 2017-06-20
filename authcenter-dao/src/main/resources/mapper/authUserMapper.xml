@@ -20,7 +20,7 @@
       UPDATE auth_user
       <set>
           <if test="userName != null">username = #{userName},</if>
-          <if test="password != null">password = #{password},</if>
+          <if test="password != null and password != '' ">password = #{password},</if>
           <if test="email != null">email = #{email},</if>
           <if test="phone != null">phone = #{phone},</if>
           <if test="avatar != null">avatar = #{avatar},</if>

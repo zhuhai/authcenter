@@ -352,23 +352,5 @@
 <script src="/static/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="/static/js/jqGrid/grid.locale-cn.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
-<script type="text/javascript">
-    //Load content via ajax
-    $(function(){
-        /*if('enable_ajax_content' in ace) {
-            var options = {
-                content_url: function(url) {
-                    return url;
-                },
-                loading_text:'正在加载中...',
-                default_url: '/index'//default url
-            };
-            ace.enable_ajax_content($, options)
-        }*/
-
-
-    });
-
-</script>
 </body>
 </html>

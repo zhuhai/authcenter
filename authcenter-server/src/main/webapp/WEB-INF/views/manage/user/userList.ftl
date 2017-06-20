@@ -23,12 +23,6 @@
                 <@shiro.hasPermission name="auth:user:update">
                     <a id="editButton" role="button" class="btn btn-purple btn-sm no-border" data-toggle="modal">修改</a>
                 </@shiro.hasPermission>
-                <@shiro.hasPermission name="auth:user:update">
-                    <a id="lockButton" role="button" class="btn btn-pink btn-sm no-border">锁定</a>
-                </@shiro.hasPermission>
-                <@shiro.hasPermission name="auth:user:update">
-                    <a id="unLockButton" role="button" class="btn btn-info btn-sm no-border">解锁</a>
-                </@shiro.hasPermission>
                 <@shiro.hasPermission name="auth:user:delete">
                     <a id="delButton" role="button" class="btn btn-danger btn-sm no-border">删除</a>
                 </@shiro.hasPermission>
@@ -191,37 +185,106 @@
                             <div class="modal-body" style="max-height: 600px;overflow-y: scroll;">
                                 <div class="container-fluid">
                                     <div class="form-group">
-                                        <label for="name" class="col-xs-12 col-sm-3 control-label">用户名</label>
+                                        <label for="edit_userName" class="col-xs-12 col-sm-3 control-label">用户名</label>
                                         <div class="col-xs-12 col-sm-7">
                                             <div class="clearfix">
-                                                <input type="text" id="name" class="form-control" name="userName">
+                                                <input type="text" id="edit_userName" class="form-control" name="edit_userName" disabled="disabled">
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="organizationId" class="col-xs-12 col-sm-3 control-label">部门</label>
+                                        <label for="edit_password" class="col-xs-12 col-sm-3 control-label">密码</label>
                                         <div class="col-xs-12 col-sm-7">
                                             <div class="clearfix">
-                                                <select class="form-control" name="organizationId" id="organization">
+                                                <input type="password" id="edit_password" name="edit_password" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_repassword" class="col-xs-12 col-sm-3 control-label">确认密码</label>
+                                        <div class="col-xs-12 col-sm-7">
+                                            <div class="clearfix">
+                                                <input type="password" id="edit_repassword" name="edit_repassword" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_realName" class="col-xs-12 col-sm-3 control-label">姓名</label>
+                                        <div class="col-xs-12 col-sm-7">
+                                            <div class="clearfix">
+                                                <input type="text" id="edit_realName" name="edit_realName" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_phone" class="col-xs-12 col-sm-3 control-label">手机号</label>
+                                        <div class="col-xs-12 col-sm-7">
+                                            <div class="clearfix">
+                                                <input type="text" id="edit_phone" name="edit_phone" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_email" class="col-xs-12 col-sm-3 control-label">邮箱</label>
+                                        <div class="col-xs-12 col-sm-7">
+                                            <div class="clearfix">
+                                                <input type="text" id="edit_email" name="edit_email" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_organizationId" class="col-xs-12 col-sm-3 control-label">部门</label>
+                                        <div class="col-xs-12 col-sm-7">
+                                            <div class="clearfix">
+                                                <select class="form-control" name="edit_organizationId" id="edit_organization">
                                                     <option value="">请选择</option>
-                                                    <#--<c:forEach items="${organizationList}" var="organization">
-                                                        <option value="${organization.id}">${organization.name}</option>
-                                                    </c:forEach>-->
+                                                    <#if organizationList??>
+                                                        <#list organizationList as organization>
+                                                            <option value="${organization.id}">${organization.name}</option>
+                                                        </#list>
+                                                    </#if>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="role" class="col-xs-12 col-sm-3 control-label">角色</label>
+                                        <label for="edit_roleIds" class="col-xs-12 col-sm-3 control-label">角色</label>
                                         <div class="col-xs-12 col-sm-7">
                                             <div class="clearfix">
-                                                <select class="form-control multiselect" name="roleIds" id="role" multiple="multiple">
-                                                    <#--<c:forEach items="${roleList}" var="role">
-                                                        <option value="${role.id}">${role.description}</option>
-                                                    </c:forEach>-->
+                                                <select class="form-control multiselect" name="edit_roleIds" id="edit_roleIds" multiple="multiple">
+                                                    <#if roleList??>
+                                                        <#list roleList as role>
+                                                            <option value="${role.id}">${role.name}</option>
+                                                        </#list>
+                                                    </#if>
                                                 </select>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_sex" class="col-xs-12 col-sm-3 control-label">性别</label>
+                                        <div class="radio">
+                                            <label>
+                                                <input name="edit_sex" type="radio" class="ace sex" value="0"/>
+                                                <span class="lbl">男&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                            </label>
+                                            <label>
+                                                <input name="edit_sex" type="radio" class="ace sex" value="1"/>
+                                                <span class="lbl">女</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_status" class="col-xs-12 col-sm-3 control-label">状态</label>
+                                        <div class="radio">
+                                            <label>
+                                                <input name="edit_status" type="radio" class="ace status" value="1"/>
+                                                <span class="lbl">正常</span>
+                                            </label>
+                                            <label>
+                                                <input name="edit_status" type="radio" class="ace status" value="0"/>
+                                                <span class="lbl">锁定</span>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +298,7 @@
                                     </button>
                                     <button class="btn btn-pink no-border" data-dismiss="modal">
                                         <i class="ace-icon fa fa-times bigger-125"></i>
-                                        关闭
+                                        取消
                                     </button>
                                 </div>
                             </div>

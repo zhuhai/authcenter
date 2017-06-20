@@ -26,7 +26,7 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
         datatype: "json",
         mtype:"GET",
         height: 310,
-        colNames:['编号','用户名','头像','姓名','性别','手机','邮箱','部门','角色','是否锁定','创建时间'],
+        colNames:['编号','用户名','头像','姓名','性别','手机','邮箱','部门','角色','是否锁定','创建时间','sex','status','organizationId'],
         colModel:[
             {
                 key:true,
@@ -136,6 +136,18 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
                 width:120,
                 sortable:true
 
+            },
+            {
+                name:'sex',
+                hidden:true
+            },
+            {
+                name:'status',
+                hidden:true
+            },
+            {
+                name:'organization.id',
+                hidden:true
             }
 
         ],
@@ -308,6 +320,7 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
 
 //修改用户
     $("#editButton").click(function(){
+        $("#updateForm")[0].reset();
         $("#role").multiselect('deselectAll',false);
         $("#role").multiselect('updateButtonText');
         //var id = $(grid_selector).jqGrid('getGridParam','selrow');
@@ -316,28 +329,54 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
             alertErrorNotice("请选择需要修改的一条数据！");
         }else{
             var rowData = $(grid_selector).jqGrid('getRowData',userIds);
-            var organization = rowData.organization;
-            var roleNames = rowData.roleName.split(",");
-            $("#name").val(rowData.userName);
+            var organization = rowData['organization.name'];
+            var roleNames = rowData.roles.split(",");
+            var sex = rowData.sex;
+            var status = rowData.status;
+            var organizationId = rowData['organization.id'];
+            $("#edit_userName").val(rowData.userName);
             $("#userId").val(rowData.id);
-            $("#organization option").each(function(){
+            $("#edit_realName").val(rowData.realName);
+            $("#edit_email").val(rowData.email);
+            $("#edit_phone").val(rowData.phone);
+            $("#edit_organization").val(organizationId);
+            /*$("#edit_organization option").each(function(){
                 if ($(this).text() == organization) {
                     $(this).attr('selected', true);
                 }
-            });
+            });*/
             for(var i=0;i<roleNames.length;i++){
-                $("#role option").each(function(){
+                $("#edit_roleIds option").each(function(){
                     if($(this).text() == roleNames[i]) {
-                        $("#role").multiselect('select',$(this).val());
+                        $("#edit_roleIds").multiselect('select',$(this).val());
                     }
                 });
             }
+            $(".sex").each(function () {
+                if ($(this).val() == sex) {
+                    $(this).attr("checked","checked");
+                } else {
+                    $(this).removeAttr("checked");
+                }
+            });
+            $(".status").each(function () {
+                if ($(this).val() == status) {
+                    $(this).attr("checked","checked");
+                } else {
+                    $(this).removeAttr("checked");
+                }
+            });
 
             $("#edit-user-modal").modal('toggle');
 
         }
 
         //var name = $(grid_selector).jqGrid('getCell',id,'userName');
+
+    });
+    $("#edit-user-modal").on('hidden.bs.modal',function(){
+        $("#updateForm")[0].reset();
+        $("#edit_roleIds").multiselect('refresh');
 
     });
 
@@ -348,26 +387,44 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
         errorElement:'div',
         errorClass:'help-block',
         rules:{
-            userName:{
+            edit_userName:{
                 required:true
             },
-            organizationId:{
+            /*organizationId:{
                 required:true
             },
             roleIds:{
                 required:true
+            },*/
+            edit_email:{
+                email:true
+            },
+            edit_password:{
+                rangelength:[6,18]
+            },
+            edit_repassword:{
+                equalTo:"#edit_password"
             }
         },
         messages:{
-            userName:{
+            edit_userName:{
                 required:'请输入用户名'
             },
-            organizationId:{
+            edit_email:{
+                email:'电子邮件格式错误'
+            },
+            edit_password:{
+                rangelength:"密码长度为6~18位"
+            },
+            edit_repassword:{
+                equalTo:"两次密码输入不一致"
+            }
+           /* organizationId:{
                 required:'请选择部门'
             },
             roleIds:{
                 required:'请选择角色'
-            }
+            }*/
         },
         highlight:function(e){
             $(e).closest(".form-group").addClass("has-error");
@@ -391,24 +448,29 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
         },
         submitHandler:function(form){
             var userId = $("#userId").val();
-            var userName = $("#name").val();
-            var organizationId = $("#organization").val();
-            var roleIds = $("#role").val();
-            if(!roleIds){
+            var realName = $("#edit_realName").val();
+            var organizationId = $("#edit_organization").val();
+            var roleIds = $("#edit_roleIds").val();
+            var password = $("#edit_password").val();
+            var email = $("#edit_email").val();
+            var phone = $("#edit_phone").val();
+            var sex = $("input[name='edit_sex']:checked").val();
+            var status = $("input[name='edit_status']:checked").val();
+            /*if(!roleIds){
                 alertErrorNotice("请选择角色！");
                 return;
-            }
+            }*/
             $.ajax({
-                url:'/user/'+userId+'/update',
+                url:'/user/update',
                 type:'post',
                 dataType:'json',
-                data:{userName:userName,organizationId:organizationId,roleIds:roleIds.toString()},
+                data:{id:userId,realName:realName,password:password,phone:phone,email:email,organizationIds:organizationId,roleIds:roleIds.toString(),sex:sex,status:status},
                 success:function(result){
-                    if(result && result.success){
+                    if(result && result.code == 1){
                         $("#edit-user-modal").modal('hide');
                         $(grid_selector).jqGrid().trigger('reloadGrid');
                     }else {
-                        alertErrorNotice(result.msg);
+                        alertErrorNotice("系统繁忙，请稍后再试！");
                     }
                 },
                 error:function(){

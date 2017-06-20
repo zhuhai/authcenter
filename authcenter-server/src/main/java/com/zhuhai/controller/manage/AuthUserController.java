@@ -13,6 +13,7 @@ import com.zhuhai.entity.AuthOrganization;
 import com.zhuhai.entity.AuthRole;
 import com.zhuhai.entity.AuthUser;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,31 +50,6 @@ public class AuthUserController {
     private AuthRoleService authRoleService;
 
 
-    @RequiresPermissions("auth:user:create")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @ResponseBody
-    public AuthResult createUser(AuthUser user,
-                                 @RequestParam(value = "roleIds", required = false) Integer[] roleIds,
-                                 @RequestParam(value = "organizationIds", required = false) Integer[] organizationIds) {
-
-        try {
-            AuthUser authUser = authUserService.getAuthUserByName(user.getUserName());
-            if (authUser == null) {
-                String salt = UUID.randomUUID().toString().replace("-", "");
-                user.setSalt(salt);
-                user.setPassword(DigestUtils.sha1Hex(user.getPassword() + salt));
-                authUserService.saveUser(user, roleIds, organizationIds);
-                return new AuthResult(AuthResultConstant.SUCCESS);
-            } else {
-                return new AuthResult(AuthResultConstant.INVALID_USERNAME);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new AuthResult(AuthResultConstant.FAIL);
-        }
-    }
-
     @RequiresPermissions("auth:user:view")
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) {
@@ -86,6 +62,14 @@ public class AuthUserController {
         return "manage/user/userList";
     }
 
+    /**
+     * 用户列表
+     * @param sidx
+     * @param sord
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @RequiresPermissions("auth:user:view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -136,6 +120,73 @@ public class AuthUserController {
             logger.error("get user list error", e);
         }
         return jqGridView;
+    }
+
+
+    /**
+     * 添加用户
+     * @param user
+     * @param roleIds
+     * @param organizationIds
+     * @return
+     */
+    @RequiresPermissions("auth:user:create")
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ResponseBody
+    public AuthResult createUser(AuthUser user,
+                                 @RequestParam(value = "roleIds", required = false) Integer[] roleIds,
+                                 @RequestParam(value = "organizationIds", required = false) Integer[] organizationIds) {
+
+        try {
+            AuthUser authUser = authUserService.getAuthUserByName(user.getUserName());
+            if (authUser == null) {
+                String salt = UUID.randomUUID().toString().replace("-", "");
+                user.setSalt(salt);
+                user.setPassword(DigestUtils.sha1Hex(user.getPassword() + salt));
+                authUserService.saveUser(user, roleIds, organizationIds);
+                return new AuthResult(AuthResultConstant.SUCCESS);
+            } else {
+                return new AuthResult(AuthResultConstant.INVALID_USERNAME);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new AuthResult(AuthResultConstant.FAIL);
+        }
+    }
+
+    /**
+     * 添加用户
+     * @param user
+     * @param roleIds
+     * @param organizationIds
+     * @return
+     */
+    @RequiresPermissions("auth:user:update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    public AuthResult updateUser(AuthUser user,
+                                 @RequestParam(value = "roleIds", required = false) Integer[] roleIds,
+                                 @RequestParam(value = "organizationIds", required = false) Integer[] organizationIds) {
+
+        try {
+            if (user != null && StringUtils.isNotBlank(user.getPassword())) {
+                String salt = UUID.randomUUID().toString().replace("-", "");
+                user.setPassword(DigestUtils.sha1Hex(user.getPassword() + salt));
+                user.setSalt(salt);
+            }
+            authUserService.updateAuthUser(user);
+
+            System.out.println(roleIds[0]);
+            System.out.println(organizationIds[0]);
+            System.out.println(user.toString());
+            return new AuthResult(AuthResultConstant.SUCCESS);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new AuthResult(AuthResultConstant.FAIL);
+        }
     }
 
 }
