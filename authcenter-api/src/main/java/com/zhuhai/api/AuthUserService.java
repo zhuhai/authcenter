@@ -35,7 +35,7 @@ public interface AuthUserService {
      *
      * @param ids
      */
-    void removeAuthUser(int[] ids) throws ServiceException;
+    void removeAuthUser(Integer[] ids) throws ServiceException;
 
     /**
      * 根据用户id获取用户
@@ -120,5 +120,21 @@ public interface AuthUserService {
      */
     void removeAuthUserOrganizationByOrganizationId(Integer organizationId) throws ServiceException;
 
+    /**
+     * 添加用户信息，用户组织，用户角色
+     * @param authUser
+     * @param roleIds
+     * @param organizationIds
+     * @throws ServiceException
+     */
     void saveUser(AuthUser authUser, Integer[] roleIds, Integer[] organizationIds) throws ServiceException;
+
+    /**
+     * 修改用户信息，用户组织，用户角色
+     * @param user
+     * @param roleIds
+     * @param organizationIds
+     * @throws ServiceException
+     */
+    void updateAuthUser(AuthUser user, Integer[] roleIds, Integer[] organizationIds) throws ServiceException;
 }

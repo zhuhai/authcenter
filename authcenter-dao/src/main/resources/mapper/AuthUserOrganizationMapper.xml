@@ -17,6 +17,12 @@
     <delete id="deleteAuthUserOrganizationsByOrganizationId">
         DELETE FROM auth_user_organization WHERE organization_id = #{organizationId};
     </delete>
+    <delete id="deleteAuthUserOrganizationsByUserIds">
+        DELETE FROM auth_user_organization WHERE user_id IN
+        <foreach collection="array" index="index" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
 
 
 </mapper>

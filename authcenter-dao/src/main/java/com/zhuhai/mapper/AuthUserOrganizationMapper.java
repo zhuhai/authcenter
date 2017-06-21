@@ -17,4 +17,6 @@ public interface AuthUserOrganizationMapper {
     void updateAuthUserOrganization(AuthUserOrganization authUserOrganization);
 
     void deleteAuthUserOrganizationsByOrganizationId(Integer organizationId);
+
+    void deleteAuthUserOrganizationsByUserIds(Integer[] ids);
 }

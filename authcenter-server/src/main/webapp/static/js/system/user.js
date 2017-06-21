@@ -280,14 +280,17 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
             var email = $("#email").val();
             var organizationId = $("#organizationId").val();
             var roleIds = $("#roleIds").val();
+            if (roleIds == null) {
+                roleIds = new Array();
+            }
             var sex = $("input[name='sex']:checked").val();
             var status = $("input[name='status']:checked").val();
             var realName = $("#realName").val();
             var phone = $("#phone").val();
-            if(!roleIds) {
+            /*if(!roleIds) {
                 alertErrorNotice("请选择角色！");
                 return;
-            }
+            }*/
             $.ajax({
                 url:'/user/create',
                 type:'post',
@@ -340,11 +343,6 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
             $("#edit_email").val(rowData.email);
             $("#edit_phone").val(rowData.phone);
             $("#edit_organization").val(organizationId);
-            /*$("#edit_organization option").each(function(){
-                if ($(this).text() == organization) {
-                    $(this).attr('selected', true);
-                }
-            });*/
             for(var i=0;i<roleNames.length;i++){
                 $("#edit_roleIds option").each(function(){
                     if($(this).text() == roleNames[i]) {
@@ -451,6 +449,9 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
             var realName = $("#edit_realName").val();
             var organizationId = $("#edit_organization").val();
             var roleIds = $("#edit_roleIds").val();
+            if (roleIds == null) {
+                roleIds = new Array();
+            }
             var password = $("#edit_password").val();
             var email = $("#edit_email").val();
             var phone = $("#edit_phone").val();
@@ -481,27 +482,28 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
     });
 
     /**
-     * 锁定用户
+     * 删除用户
      */
-    $("#lockButton").click(function(){
+    $("#delButton").click(function(){
         var ids = $(grid_selector).jqGrid('getGridParam','selarrrow');
+        console.log(ids);
         if(ids.length == 0) {
             alertErrorNotice("请至少选择一条数据！");
         } else {
             bootbox.setLocale("zh_CN");
-            bootbox.confirm('确定要锁定吗？',function(result){
+            /*bootbox.confirm('确定要删除吗？',function(result){
                 if (result) {
                     $.ajax({
-                        url:'/user/lock',
+                        url:'/user/delete',
                         type:'POST',
                         dataType:'json',
-                        data:{ids:ids,lock:true},
+                        data:{ids:ids.toString()},
                         success:function(result){
-                            if (result && result.success) {
-                                alertSuccessNotice(result.msg,1000);
+                            if (result && result.code == 1) {
+                                alertSuccessNotice("删除成功",1000);
                                 $(grid_selector).jqGrid().trigger('reloadGrid');
                             }else{
-                                alertErrorNotice(result.msg);
+                                alertErrorNotice("系统繁忙，请稍后再试！");
                             }
                         },
                         error:function(){
@@ -509,38 +511,47 @@ $(".page-content-area").ace_ajax('loadScripts',scripts,function(){
                         }
                     });
                 }
-            });
-
-        }
-    });
-
-    /**
-     * 解锁用户
-     */
-    $("#unLockButton").click(function(){
-        var ids = $(grid_selector).jqGrid('getGridParam','selarrrow');
-        if(ids.length == 0) {
-            alertErrorNotice("请至少选择一条数据！");
-        } else {
-            $.ajax({
-                url:'/user/lock',
-                type:'POST',
-                dataType:'json',
-                data:{ids:ids,lock:false},
-                success:function(result){
-                    if (result && result.success) {
-                        alertSuccessNotice(result.msg,1000);
-                        $(grid_selector).jqGrid().trigger('reloadGrid');
-                    }else{
-                        alertErrorNotice(result.msg);
+            });*/
+            bootbox.confirm({
+                title:'<i class="fa fa-lightbulb-o"></i> 提示',
+                message:"确定要删除吗？",
+                buttons:{
+                    confirm:{
+                        label:'<i class="fa fa-check"></i> 确认',
+                        className:"btn-success no-border"
+                    },
+                    cancel:{
+                        label:'<i class="fa fa-times"></i> 取消',
+                        className:"btn-danger no-border"
                     }
                 },
-                error:function(){
-                    alertErrorNotice("系统异常，解锁失败！")
+                callback:function(result) {
+                    if (result) {
+                        $.ajax({
+                            url:'/user/delete',
+                            type:'POST',
+                            dataType:'json',
+                            data:{ids:ids.toString()},
+                            success:function(result){
+                                if (result && result.code == 1) {
+                                    alertSuccessNotice("删除成功",1000);
+                                    $(grid_selector).jqGrid().trigger('reloadGrid');
+                                }else{
+                                    alertErrorNotice("系统繁忙，请稍后再试！");
+                                }
+                            },
+                            error:function(){
+                                alertErrorNotice("系统异常，锁定失败！")
+                            }
+                        });
+                    }
                 }
             });
+
         }
     });
+
+
 
 
 });

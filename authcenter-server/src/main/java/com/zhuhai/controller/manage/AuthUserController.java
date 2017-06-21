@@ -175,13 +175,24 @@ public class AuthUserController {
                 user.setPassword(DigestUtils.sha1Hex(user.getPassword() + salt));
                 user.setSalt(salt);
             }
-            authUserService.updateAuthUser(user);
-
-            System.out.println(roleIds[0]);
-            System.out.println(organizationIds[0]);
-            System.out.println(user.toString());
+            authUserService.updateAuthUser(user, roleIds, organizationIds);
             return new AuthResult(AuthResultConstant.SUCCESS);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new AuthResult(AuthResultConstant.FAIL);
+        }
+    }
+
+
+    @RequiresPermissions("auth:user:delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public AuthResult deleteAuthUser(@RequestParam("ids") Integer[] ids) {
+        try {
+
+            authUserService.removeAuthUser(ids);
+            return new AuthResult(AuthResultConstant.SUCCESS);
 
         } catch (Exception e) {
             e.printStackTrace();

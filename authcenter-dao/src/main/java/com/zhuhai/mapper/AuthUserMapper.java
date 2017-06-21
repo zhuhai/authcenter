@@ -13,7 +13,7 @@ import java.util.List;
 public interface AuthUserMapper {
     int insertAuthUser(AuthUser authUser);
     void updateAuthUser(AuthUser authUser);
-    void deleteAuthUser(int[] ids);
+    void deleteAuthUser(Integer[] ids);
     AuthUser selectAuthUserById(Integer id);
     AuthUser selectAuthUserByName(String userName);
     List<AuthUser> selectAuthUserList();

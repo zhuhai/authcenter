@@ -14,4 +14,10 @@
     <delete id="deleteAuthUserRolesByRoleId">
         DELETE FROM auth_user_role WHERE role_id = #{roleId}
     </delete>
+    <delete id="deleteAuthUserRolesByUserIds">
+        DELETE FROM auth_user_role WHERE user_id IN
+        <foreach collection="array" index="index" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
 </mapper>

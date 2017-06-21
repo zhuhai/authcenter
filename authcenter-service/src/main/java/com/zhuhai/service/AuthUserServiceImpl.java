@@ -50,11 +50,14 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
-    public void removeAuthUser(int[] ids) {
+    public void removeAuthUser(Integer[] ids) {
         if (ArrayUtils.isEmpty(ids)) {
             return;
         }
         authUserMapper.deleteAuthUser(ids);
+        authUserOrganizationMapper.deleteAuthUserOrganizationsByUserIds(ids);
+        authUserRoleMapper.deleteAuthUserRolesByUserIds(ids);
+
     }
 
     @Override
@@ -170,6 +173,40 @@ public class AuthUserServiceImpl implements AuthUserService {
             throw new ServiceException(e.getMessage(), e);
         }
 
+    }
+
+    @Override
+    public void updateAuthUser(AuthUser user, Integer[] roleIds, Integer[] organizationIds) throws ServiceException {
+        if (user == null) {
+            return;
+        }
+        try {
+            authUserMapper.updateAuthUser(user);
+            authUserRoleMapper.deleteAuthUserRolesByUserId(user.getId());
+            authUserOrganizationMapper.deleteAuthUserOrganizationsByUserId(user.getId());
+            if (!ArrayUtils.isEmpty(roleIds)) {
+                List<AuthUserRole> authUserRoleList = new ArrayList<>();
+                for (Integer roleId : roleIds) {
+                    AuthUserRole authUserRole = new AuthUserRole();
+                    authUserRole.setUserId(user.getId());
+                    authUserRole.setRoleId(roleId);
+                    authUserRoleList.add(authUserRole);
+                }
+                authUserRoleMapper.insertAuthUserRoles(authUserRoleList);
+            }
+            if (!ArrayUtils.isEmpty(organizationIds)) {
+                List<AuthUserOrganization> list = new ArrayList<>();
+                for (Integer organizationId : organizationIds) {
+                    AuthUserOrganization authUserOrganization = new AuthUserOrganization();
+                    authUserOrganization.setUserId(user.getId());
+                    authUserOrganization.setOrganizationId(organizationId);
+                    list.add(authUserOrganization);
+                }
+                authUserOrganizationMapper.insertAuthUserOrganizations(list);
+            }
+        } catch (ServiceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
 }
