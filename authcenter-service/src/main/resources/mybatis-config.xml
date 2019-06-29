@@ -33,7 +33,7 @@
 
         </plugin>
         <!--排序插件-->
-        <plugin interceptor="tk.mybatis.orderbyhelper.OrderByHelper"/>
+        <!--<plugin interceptor="tk.mybatis.orderbyhelper.OrderByHelper"/>-->
     </plugins>
 
 </configuration>
